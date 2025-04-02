@@ -28,12 +28,21 @@ typedef struct s_token
 }	t_token;
 
 //MAIN and LOOP functions
-t_token	*new_token(char *content, t_token_type type);
 
 //EXECUTOR
 int		count_tokens(t_token *list);
 char	**build_argv(t_token *tokens);
 void	execute_tokens(t_token *tokens, char **env);
+
+//PARSER
+t_token	*create_token_node(char *word, int is_command);
+void	free_split(char **split);
+t_token	*mock_tokenize_input(char *input);
+
+//BUILTINS
+int		is_builtin(char *cmd);
+int		execute_builtin(char **argv);
+int		builtin_echo(char **argv);
 
 //LIBERATIONS
 void	free_tokens(t_token *tokens);
