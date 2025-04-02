@@ -9,7 +9,9 @@ INCLUDES := -I includes -I $(LIBFTDIR)
 
 SRC := src/main.c \
 		src/executor.c \
-		src/liberations.c
+		src/liberations.c \
+		src/mock_parser.c \
+		src/builtins.c
 
 OBJS := $(SRC:.c=.o)
 
