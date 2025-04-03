@@ -11,6 +11,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <sys/types.h>
+# include <errno.h>
 
 //static int			g_var;
 
@@ -41,8 +42,10 @@ t_token	*mock_tokenize_input(char *input);
 
 //BUILTINS
 int		is_builtin(char *cmd);
-int		execute_builtin(char **argv);
+int		execute_builtin(char **argv, char **env);
 int		builtin_echo(char **argv);
+int		builtin_pwd(char **argv);
+int		builtin_env(char **argv, char **env);
 
 //LIBERATIONS
 void	free_tokens(t_token *tokens);
