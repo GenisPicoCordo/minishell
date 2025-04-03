@@ -2,16 +2,22 @@ NAME := minishell
 CC := cc
 CFLAGS := -Wall -Werror -Wextra -g -fsanitize=address
 LDFLAGS := -lreadline
-RM := rm -f
+RM := rm -fr
 LIBFTDIR := libft
 LIBFT := $(LIBFTDIR)/libft.a
 INCLUDES := -I includes -I $(LIBFTDIR)
 
-SRC := src/main.c \
-		src/executor.c \
-		src/liberations.c \
-		src/mock_parser.c \
-		src/builtins.c
+SRC := src/main/main.c \
+		src/executor/executor.c \
+		src/liberations/liberations.c \
+		src/parser/mock_parser.c \
+		src/builtins/builtins.c \
+		src/builtins/echo.c \
+		src/builtins/env.c \
+		src/builtins/exit.c \
+		src/builtins/pwd.c \
+		src/builtins/cd.c \
+		src/utils/utils.c
 
 OBJS := $(SRC:.c=.o)
 
