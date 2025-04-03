@@ -6,6 +6,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <limits.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/wait.h>
@@ -46,6 +47,11 @@ int		execute_builtin(char **argv, char **env);
 int		builtin_echo(char **argv);
 int		builtin_pwd(char **argv);
 int		builtin_env(char **argv, char **env);
+int		is_numeric(const char *str);
+int		builtin_exit(char **argv);
+
+//UTILS
+int		str_is_overflowing_long(const char *str);
 
 //LIBERATIONS
 void	free_tokens(t_token *tokens);
