@@ -49,6 +49,9 @@ int		builtin_pwd(char **argv);
 int		builtin_env(char **argv, char **env);
 int		is_numeric(const char *str);
 int		builtin_exit(char **argv);
+int		validate_cd_args(char **argv);
+char	*get_cd_path(char **argv);
+int		builtin_cd(char **argv);
 
 //UTILS
 int		str_is_overflowing_long(const char *str);
