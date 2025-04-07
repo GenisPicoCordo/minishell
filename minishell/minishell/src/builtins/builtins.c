@@ -24,6 +24,8 @@ int	is_builtin(char *cmd)
 		return (1);
 	if (!ft_strncmp(cmd, "exit", 5))
 		return (1);
+	if (!ft_strncmp(cmd, "cd", 3))
+		return (1);
 	return (0);
 }
 
@@ -39,5 +41,7 @@ int	execute_builtin(char **argv, char **env)
 		return (builtin_env(argv, env));
 	if (!ft_strncmp(argv[0], "exit", 5))
 		return (builtin_exit(argv));
+	if (!ft_strncmp(argv[0], "cd", 3))
+		return (builtin_cd(argv));
 	return (1);
 }
