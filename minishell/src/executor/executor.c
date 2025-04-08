@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:46:54 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/03 15:50:08 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/08 15:56:20 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	count_tokens(t_token *list)
 	count = 0;
 	while (list)
 	{
-		if (list->type == T_COMMANDS || list->type == T_ARGUMENT)
+		if (list->type == T_COMMANDS || list->type == T_ARGUMENT || list->type == T_WORD)
 			count++;
 		list = list->next;
 	}
@@ -56,7 +56,7 @@ char	**build_argv(t_token *tokens)
 		return (NULL);
 	while (tokens)
 	{
-		if (tokens->type == T_COMMANDS || tokens->type == T_ARGUMENT)
+		if (tokens->type == T_COMMANDS || tokens->type == T_ARGUMENT || tokens->type == T_WORD)
 			argv[i++] = tokens->content;
 		tokens = tokens->next;
 	}
@@ -64,37 +64,57 @@ char	**build_argv(t_token *tokens)
 	return (argv);
 }
 
-void	execute_tokens(t_token *tokens, char **env)
+int	execute_tokens(t_token *tokens, char **env)
 {
 	char	**argv;
+	char	*cmd_path;
 	pid_t	pid;
 	int		status;
+	int		exit_code;
 
 	if (!tokens)
-		return ;
+		return (0);
 	argv = build_argv(tokens);
-	if (!argv)
-		return ;
+	if (!argv || !argv[0])
+		return (1);
 	if (is_builtin(argv[0]))
 	{
-		execute_builtin(argv, env);
+		exit_code = execute_builtin(argv, env);
 		free(argv);
+		return (exit_code);
 	}
 	else
 	{
+		cmd_path = find_command_path(argv[0]);
+		if (!cmd_path)
+		{
+			ft_putendl_fd("Command not found", 2);
+			free(argv);
+			return (127); // estándar bash: 127 = command not found
+		}
 		pid = fork();
 		if (pid == 0)
 		{
-			execve(argv[0], argv, env);
+			execve(cmd_path, argv, env);
 			perror("execve");
-			exit(1);
+			exit(1); // solo el hijo termina así
 		}
 		else if (pid > 0)
 		{
 			waitpid(pid, &status, 0);
 			free(argv);
+			free(cmd_path);
+			if (WIFEXITED(status))
+				return WEXITSTATUS(status);
+			else
+				return 1;
 		}
 		else
+		{
 			perror("fork");
+			free(argv);
+			free(cmd_path);
+			return 1;
+		}
 	}
 }

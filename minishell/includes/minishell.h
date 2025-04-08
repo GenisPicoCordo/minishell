@@ -18,6 +18,12 @@
 
 typedef enum e_type_tokens
 {
+	T_WORD,
+	T_PIPE,
+	T_REDIRECT_IN,
+	T_REDIRECT_OUT,
+	T_APPEND,
+	T_HEREDOC,
 	T_COMMANDS,
 	T_ARGUMENT
 }	t_token_type;
@@ -34,12 +40,14 @@ typedef struct s_token
 //EXECUTOR
 int		count_tokens(t_token *list);
 char	**build_argv(t_token *tokens);
-void	execute_tokens(t_token *tokens, char **env);
+int		execute_tokens(t_token *tokens, char **env);
+//void	execute_tokens(t_token *tokens, char **env);
 
 //PARSER
 t_token	*create_token_node(char *word, int is_command);
 void	free_split(char **split);
 t_token	*mock_tokenize_input(char *input);
+t_token	*tokenize_input(const char *input, char **env, int last_status);
 
 //BUILTINS
 int		is_builtin(char *cmd);
@@ -55,6 +63,7 @@ int		builtin_cd(char **argv);
 
 //UTILS
 int		str_is_overflowing_long(const char *str);
+char	*find_command_path(char *cmd);
 
 //LIBERATIONS
 void	free_tokens(t_token *tokens);

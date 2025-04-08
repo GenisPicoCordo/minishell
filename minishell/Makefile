@@ -11,13 +11,15 @@ SRC := src/main/main.c \
 		src/executor/executor.c \
 		src/liberations/liberations.c \
 		src/parser/mock_parser.c \
+		src/parser/lexer.c \
 		src/builtins/builtins.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
 		src/builtins/exit.c \
 		src/builtins/pwd.c \
 		src/builtins/cd.c \
-		src/utils/utils.c
+		src/utils/utils.c \
+		src/utils/resolve_path.c
 
 OBJS := $(SRC:.c=.o)
 
