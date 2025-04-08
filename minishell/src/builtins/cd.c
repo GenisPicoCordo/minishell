@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:39:49 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/03 16:41:56 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:54:01 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	validate_cd_args(char **argv)
 {
-	if (argv[1] && argv[2])
+	if (argv[2])
 	{
 		ft_putendl_fd("cd: too many arguments", 2);
 		return (1);

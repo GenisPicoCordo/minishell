@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
+/*   Updated: 2025/04/08 15:35:55 by gpico-co         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -52,6 +64,7 @@ int		builtin_exit(char **argv);
 int		validate_cd_args(char **argv);
 char	*get_cd_path(char **argv);
 int		builtin_cd(char **argv);
+int		builtin_export(char **argv, char **env);
 
 //UTILS
 int		str_is_overflowing_long(const char *str);

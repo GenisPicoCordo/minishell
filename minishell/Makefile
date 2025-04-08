@@ -17,6 +17,7 @@ SRC := src/main/main.c \
 		src/builtins/exit.c \
 		src/builtins/pwd.c \
 		src/builtins/cd.c \
+		src/builtins/export.c \
 		src/utils/utils.c
 
 OBJS := $(SRC:.c=.o)
