@@ -17,6 +17,9 @@ SRC := src/main/main.c \
 		src/parser/expansion.c \
 		src/parser/operator_handlers.c \
 		src/parser/quote_handlers.c \
+		src/parser/parser.c \
+		src/parser/parser_validation.c \
+		src/parser/heredoc_utils.c \
 		src/builtins/builtins.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
