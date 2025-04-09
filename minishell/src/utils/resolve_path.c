@@ -3,35 +3,34 @@
 #include <stdlib.h>
 #include <string.h>
 
-char    *find_command_path(char *cmd)
+char	*find_command_path(char *cmd)
 {
-	char *path_var = getenv("PATH");
-	char **paths;
-	char *full_path;
-	int i;
+	char	*path_var;
+	char	**paths;
+	char	*full_path;
+	int		i;
+	char	*tmp;
 
-	// Si ya contiene '/' se asume como ruta absoluta o relativa
+	path_var = getenv("PATH");
+	i = 0;
 	if (!path_var || ft_strchr(cmd, '/'))
-		return ft_strdup(cmd);
-
+		return (ft_strdup(cmd));
 	paths = ft_split(path_var, ':');
 	if (!paths)
-		return NULL;
-
-	i = 0;
+		return (NULL);
 	while (paths[i])
 	{
-		char *tmp = ft_strjoin(paths[i], "/");
+		tmp = ft_strjoin(paths[i], "/");
 		full_path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (access(full_path, X_OK) == 0)
 		{
 			free_split(paths);
-			return full_path;
+			return (full_path);
 		}
 		free(full_path);
 		i++;
 	}
 	free_split(paths);
-	return NULL;
+	return (NULL);
 }
