@@ -6,26 +6,24 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 15:43:56 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/03 15:49:42 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/09 15:37:39 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	builtin_env(char **argv, char **env)
+int	builtin_env(char **argv, t_env *env)
 {
-	int	i;
-
-	i = 0;
-	if (argv[1])
+	(void)argv;
+	while (env)
 	{
-		ft_putendl_fd("env: to many arguments", 2);
-		return (127);
-	}
-	while (env[i])
-	{
-		ft_putendl_fd(env[i], 1);
-		i++;
+		if (env->value)
+		{
+			ft_putstr_fd(env->key, 1);
+			ft_putchar_fd('=', 1);
+			ft_putendl_fd(env->value, 1);
+		}
+		env = env->next;
 	}
 	return (0);
 }

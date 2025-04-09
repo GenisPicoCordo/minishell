@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:46:54 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/03 15:50:08 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/09 14:20:01 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	**build_argv(t_token *tokens)
 	return (argv);
 }
 
-void	execute_tokens(t_token *tokens, char **env)
+void	execute_tokens(t_token *tokens, char **env, t_env **env_list)
 {
 	char	**argv;
 	pid_t	pid;
@@ -77,7 +77,7 @@ void	execute_tokens(t_token *tokens, char **env)
 		return ;
 	if (is_builtin(argv[0]))
 	{
-		execute_builtin(argv, env);
+		execute_builtin(argv, env_list);
 		free(argv);
 	}
 	else

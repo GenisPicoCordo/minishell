@@ -1,26 +1,30 @@
 NAME := minishell
 CC := cc
-CFLAGS := -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra -g #-fsanitize=address
 LDFLAGS := -lreadline
 RM := rm -fr
 LIBFTDIR := libft
 LIBFT := $(LIBFTDIR)/libft.a
 INCLUDES := -I includes -I $(LIBFTDIR)
 
-SRC := src/main/main.c \
-		src/executor/executor.c \
-		src/liberations/liberations.c \
-		src/parser/mock_parser.c \
-		src/builtins/builtins.c \
-		src/builtins/echo.c \
-		src/builtins/env.c \
-		src/builtins/exit.c \
-		src/builtins/pwd.c \
-		src/builtins/cd.c \
-		src/builtins/export.c \
-		src/utils/utils.c
+SRCS = \
+	src/main/main.c \
+	src/executor/executor.c \
+	src/builtins/echo.c \
+	src/builtins/env.c \
+	src/builtins/export.c \
+	src/builtins/unset.c \
+	src/builtins/pwd.c \
+	src/builtins/cd.c \
+	src/builtins/exit.c \
+	src/builtins/builtins.c \
+	src/parser/mock_parser.c \
+	src/utils/builtin_utils.c \
+	src/env/env_utils.c \
+	src/env/env_init.c \
+	src/liberations/liberations.c
 
-OBJS := $(SRC:.c=.o)
+OBJS := $(SRCS:.c=.o)
 
 LIBS := $(LIBFT)
 
