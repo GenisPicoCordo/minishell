@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 12:00:55 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:36:53 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_token
 //EXECUTOR
 int		count_tokens(t_token *list);
 char	**build_argv(t_token *tokens);
-void	execute_tokens(t_token *tokens, char **envp, t_env **env_list);
+void	execute_tokens(t_token *tokens, char **env_unused, t_env **env_list);
 
 //PARSER
 t_token	*create_token_node(char *word, int is_command);
@@ -92,9 +92,12 @@ int		split_key_value(char *arg, char **key, char **value);
 char	*env_get(t_env *env, const char *key);
 void	env_set(t_env **env, const char *key, const char *value);
 void	env_unset(t_env **env, const char *key);
+int		env_list_size(t_env *env);
+char	**env_to_array(t_env *env);
 
 //UTILS
 int		str_is_overflowing_long(const char *str);
+char	*find_command_path(char *cmd, t_env *env);
 
 //LIBERATIONS
 void	free_tokens(t_token *tokens);

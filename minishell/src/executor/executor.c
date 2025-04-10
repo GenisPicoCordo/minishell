@@ -6,26 +6,9 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:46:54 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/09 14:20:01 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:33:25 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-🛠️ Paso 1: Preparar un subcomando de prueba
-Vamos a asumir que el parser de tu compañero te da una lista de este tipo:
-
-// tokens: ls -l -a
-[t_token] -> content: "ls"   | type: T_COMMANDS  
-[t_token] -> content: "-l"   | type: T_ARGUMENT  
-[t_token] -> content: "-a"   | type: T_ARGUMENT  
-Lo que necesitamos es:
-
-Construir un char **argv para execve
-
-Verificar si es un builtin (por ahora no)
-
-Si no → hacer fork, y el hijo ejecuta con execve
-*/
 
 #include "../../includes/minishell.h"
 
@@ -64,12 +47,15 @@ char	**build_argv(t_token *tokens)
 	return (argv);
 }
 
-void	execute_tokens(t_token *tokens, char **env, t_env **env_list)
+void	execute_tokens(t_token *tokens, char **env_unused, t_env **env_list)
 {
 	char	**argv;
+	char	*cmd_path;
+	char	**env_array;
 	pid_t	pid;
 	int		status;
 
+	(void)env_unused;
 	if (!tokens)
 		return ;
 	argv = build_argv(tokens);
@@ -79,22 +65,32 @@ void	execute_tokens(t_token *tokens, char **env, t_env **env_list)
 	{
 		execute_builtin(argv, env_list);
 		free(argv);
+		return ;
+	}
+	cmd_path = find_command_path(argv[0], *env_list);
+	env_array = env_to_array(*env_list);
+	if (!cmd_path || !env_array)
+	{
+		perror("minishell");
+		free(argv);
+		free(cmd_path);
+		free_split(env_array);
+		return ;
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		execve(cmd_path, argv, env_array);
+		perror("execve");
+		exit(1);
+	}
+	else if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
 	}
 	else
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			execve(argv[0], argv, env);
-			perror("execve");
-			exit(1);
-		}
-		else if (pid > 0)
-		{
-			waitpid(pid, &status, 0);
-			free(argv);
-		}
-		else
-			perror("fork");
-	}
+		perror("fork");
+	free(argv);
+	free(cmd_path);
+	free_split(env_array);
 }

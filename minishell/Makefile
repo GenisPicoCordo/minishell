@@ -20,8 +20,10 @@ SRCS = \
 	src/builtins/builtins.c \
 	src/parser/mock_parser.c \
 	src/utils/builtin_utils.c \
+	src/utils/find_command_path.c \
 	src/env/env_utils.c \
 	src/env/env_init.c \
+	src/env/env_to_array.c \
 	src/liberations/liberations.c
 
 OBJS := $(SRCS:.c=.o)
