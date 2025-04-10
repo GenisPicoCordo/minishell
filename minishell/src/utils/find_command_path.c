@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_command_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 12:36:32 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 13:56:21 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:06:40 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,4 @@ char	*search_in_paths(char **paths, char *cmd)
 	}
 	free_split(paths);
 	return (NULL);
-}
-
-char	*find_command_path(char *cmd, t_env *env)
-{
-	char	*path_var;
-	char	**paths;
-
-	if (!cmd || ft_strchr(cmd, '/'))
-		return (ft_strdup(cmd));
-	path_var = env_get(env, "PATH");
-	if (!path_var)
-		return (NULL);
-	paths = ft_split(path_var, ':');
-	if (!paths)
-		return (NULL);
-	return (search_in_paths(paths, cmd));
 }
