@@ -6,7 +6,7 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:46:54 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 12:33:25 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:11:02 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,15 @@ char	**build_argv(t_token *tokens)
 	return (argv);
 }
 
-void	execute_tokens(t_token *tokens, char **env_unused, t_env **env_list)
+int	execute_tokens(t_token *tokens, t_env **env_list)
 {
 	char	**argv;
 	char	*cmd_path;
 	char	**env_array;
-
 	pid_t	pid;
 	int		status;
 	int		exit_code;
 
-	(void)env_unused;
 	if (!tokens)
 		return (0);
 	argv = build_argv(tokens);
@@ -65,36 +63,45 @@ void	execute_tokens(t_token *tokens, char **env_unused, t_env **env_list)
 		return (1);
 	if (is_builtin(argv[0]))
 	{
-		execute_builtin(argv, env_list);
+		exit_code = execute_builtin(argv, env_list);
 		free(argv);
-		return ;
-
-	}
-	cmd_path = find_command_path(argv[0], *env_list);
-	env_array = env_to_array(*env_list);
-	if (!cmd_path || !env_array)
-	{
-		perror("minishell");
-		free(argv);
-		free(cmd_path);
-		free_split(env_array);
-		return ;
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		execve(cmd_path, argv, env_array);
-		perror("execve");
-		exit(1);
-
-	}
-	else if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
+		return (exit_code);
 	}
 	else
-		perror("fork");
-	free(argv);
-	free(cmd_path);
-	free_split(env_array);
+	{
+		cmd_path = find_command_path(argv[0]);
+		env_array = env_to_array(*env_list);
+		if (!cmd_path || !env_array)
+		{
+			ft_putendl_fd("Command not found", 2);
+			free(argv);
+			free(cmd_path);
+			free_split(env_array);
+			return (127);
+		}
+		pid = fork();
+		if (pid == 0)
+		{
+			execve(cmd_path, argv, env_array);
+			perror("execve");
+			exit(1);
+		}
+		else if (pid > 0)
+		{
+			waitpid(pid, &status, 0);
+			free(argv);
+			free(cmd_path);
+			if (WIFEXITED(status))
+				return (WEXITSTATUS(status));
+			else
+				return (1);
+		}
+		else
+		{
+			perror("fork");
+			free(argv);
+			free(cmd_path);
+			return (1);
+		}
+	}
 }
