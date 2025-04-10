@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:39:49 by gpico-co          #+#    #+#             */
 /*   Updated: 2025/04/10 12:02:58 by gpico-co         ###   ########.fr       */
@@ -17,7 +17,15 @@ char	*get_cd_target(char **argv, t_env **env_list, char *oldpwd)
 	char	*path;
 
 	if (!argv[1] || (argv[1][0] == '~' && argv[1][1] == '\0'))
-		return (env_get(*env_list, "HOME"));
+	{
+		path = getenv("HOME");
+		if (!path)
+		{
+			ft_putendl_fd("cd: HOME not set", 2);
+			return (NULL);
+		}
+		return (path);
+	}
 	if (argv[1][0] == '-' && argv[1][1] == '\0')
 	{
 		path = env_get(*env_list, "OLDPWD");

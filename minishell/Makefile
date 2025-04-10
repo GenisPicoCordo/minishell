@@ -7,26 +7,36 @@ LIBFTDIR := libft
 LIBFT := $(LIBFTDIR)/libft.a
 INCLUDES := -I includes -I $(LIBFTDIR)
 
-SRCS = \
-	src/main/main.c \
-	src/executor/executor.c \
-	src/builtins/echo.c \
-	src/builtins/env.c \
-	src/builtins/export.c \
-	src/builtins/unset.c \
-	src/builtins/pwd.c \
-	src/builtins/cd.c \
-	src/builtins/exit.c \
-	src/builtins/builtins.c \
-	src/parser/mock_parser.c \
-	src/utils/builtin_utils.c \
-	src/utils/find_command_path.c \
-	src/env/env_utils.c \
-	src/env/env_init.c \
-	src/env/env_to_array.c \
-	src/liberations/liberations.c
+SRC := src/main/main.c \
+		src/executor/executor.c \
+		src/liberations/liberations.c \
+		src/errors/lexer_errors.c \
+		src/parser/mock_parser.c \
+		src/parser/lexer.c \
+		src/parser/lexer_utils.c \
+		src/parser/expansion.c \
+		src/parser/operator_handlers.c \
+		src/parser/quote_handlers.c \
+		src/parser/parser.c \
+		src/parser/parser_validation.c \
+		src/parser/heredoc_utils.c \
+		src/builtins/builtins.c \
+		src/builtins/echo.c \
+		src/builtins/env.c \
+    src/builtins/export.c \
+	  src/builtins/unset.c \
+		src/builtins/exit.c \
+		src/builtins/pwd.c \
+		src/builtins/cd.c \
+    src/utils/builtin_utils.c \
+		src/utils/utils.c \
+    src/utils/find_command_path.c \
+		src/utils/resolve_path.c \
+    src/env/env_utils.c \
+	  src/env/env_init.c \
+	  src/env/env_to_array.c 
 
-OBJS := $(SRCS:.c=.o)
+OBJS := $(SRC:.c=.o)
 
 LIBS := $(LIBFT)
 
