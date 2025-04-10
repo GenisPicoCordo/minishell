@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 17:29:27 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/03 15:50:21 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:53:02 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,42 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*input;
-	t_token	*tokens;
+	t_shell	shell;
 
 	(void)argc;
 	(void)argv;
+	shell.env = envp;
+	shell.last_status = 0;
 	while (1)
 	{
-		input = readline("minishell> ");
-		if (!input)
+		shell.input = readline("minishell> ");
+		if (!shell.input)
 		{
 			printf("exit\n");
 			break ;
 		}
-		if (*input)
-			add_history(input);
-		tokens = mock_tokenize_input(input);
-		execute_tokens(tokens, envp);
-		free_tokens(tokens);
-		free(input);
+		if (*shell.input)
+			add_history(shell.input);
+		shell.tokens = tokenize_input(&shell);
+		if (shell.tokens)
+		{
+			shell.cmd_table = parse_tokens(shell.tokens);
+			if (shell.cmd_table)
+			{
+				if (!validate_cmd_table(&shell))
+				{
+					free_cmd_table(shell.cmd_table);
+					free_tokens(shell.tokens);
+					free(shell.input);
+					continue ;
+				}
+				print_cmd_table(shell.cmd_table);
+				free_cmd_table(shell.cmd_table);
+			}
+			shell.last_status = execute_tokens(shell.tokens, shell.env);
+			free_tokens(shell.tokens);
+		}
+		free(shell.input);
 	}
+	return (shell.last_status);
 }

@@ -10,14 +10,24 @@ INCLUDES := -I includes -I $(LIBFTDIR)
 SRC := src/main/main.c \
 		src/executor/executor.c \
 		src/liberations/liberations.c \
+		src/errors/lexer_errors.c \
 		src/parser/mock_parser.c \
+		src/parser/lexer.c \
+		src/parser/lexer_utils.c \
+		src/parser/expansion.c \
+		src/parser/operator_handlers.c \
+		src/parser/quote_handlers.c \
+		src/parser/parser.c \
+		src/parser/parser_validation.c \
+		src/parser/heredoc_utils.c \
 		src/builtins/builtins.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
 		src/builtins/exit.c \
 		src/builtins/pwd.c \
 		src/builtins/cd.c \
-		src/utils/utils.c
+		src/utils/utils.c \
+		src/utils/resolve_path.c
 
 OBJS := $(SRC:.c=.o)
 

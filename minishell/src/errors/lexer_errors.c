@@ -1,43 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   liberations.c                                      :+:      :+:    :+:   */
+/*   lexer_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 14:33:51 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/09 15:44:43 by ncampo-f         ###   ########.fr       */
+/*   Created: 2025/04/09 12:43:19 by ncampo-f          #+#    #+#             */
+/*   Updated: 2025/04/09 13:16:17 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	free_tokens(t_token *tokens)
+void	print_quote_error(t_quote_error err)
 {
-	t_token	*tmp;
-
-	while (tokens)
-	{
-		tmp = tokens->next;
-		free(tokens->content);
-		free(tokens);
-		tokens = tmp;
-	}
-}
-
-void	free_cmd_table(t_cmd_table *table)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->count)
-	{
-		free_split(table->cmds[i].args);
-		free(table->cmds[i].cmd);
-		free_split(table->cmds[i].heredoc_names);
-		free_tokens(table->cmds[i].redirs);
-		i++;
-	}
-	free(table->cmds);
-	free(table);
+	if (err == SINGLE_QUOTE_UNCLOSED)
+		ft_putendl_fd(ERR_SINGLE_QUOTE, 2);
+	else if (err == DOUBLE_QUOTE_UNCLOSED)
+		ft_putendl_fd(ERR_DOUBLE_QUOTE, 2);
+	else if (err == INVALID_OPERATOR)
+		ft_putendl_fd(ERR_INV_OPERATOR, 2);
+	else
+		ft_putendl_fd(ERR_UNKNOWN_QUOTE, 2);
 }
