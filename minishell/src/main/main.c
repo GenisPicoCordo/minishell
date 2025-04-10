@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 17:29:27 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/09 16:09:45 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:20:25 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*tokens;
 	t_env	*env_list;
 
-	(void)argc;
 	(void)argv;
 	if (argc > 1)
 	{

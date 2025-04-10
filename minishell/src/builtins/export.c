@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:34:44 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/09 14:11:35 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:59:38 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,31 +30,37 @@ int	print_export_env(t_env *env)
 	return (0);
 }
 
-int	builtin_export(char **argv, t_env **env_list)
+int	process_single_export(char *arg, t_env **env_list)
 {
-	int		i;
 	char	*key;
 	char	*value;
+
+	if (!is_valid_identifier(arg))
+	{
+		ft_putstr_fd("export: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
+		return (1);
+	}
+	if (split_key_value(arg, &key, &value))
+	{
+		env_set(env_list, key, value);
+		free(key);
+		free(value);
+	}
+	return (0);
+}
+
+int	builtin_export(char **argv, t_env **env_list)
+{
+	int	i;
 
 	if (!argv[1])
 		return (print_export_env(*env_list));
 	i = 1;
 	while (argv[i])
 	{
-		if (!is_valid_identifier(argv[i]))
-		{
-			ft_putstr_fd("export: `", 2);
-			ft_putstr_fd(argv[i], 2);
-			ft_putendl_fd("': not a valid identifier", 2);
-			i++;
-			continue ;
-		}
-		if (split_key_value(argv[i], &key, &value))
-		{
-			env_set(env_list, key, value);
-			free(key);
-			free(value);
-		}
+		process_single_export(argv[i], env_list);
 		i++;
 	}
 	return (0);

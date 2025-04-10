@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/09 16:25:51 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:00:55 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_mishell
+/*typedef struct s_mishell
 {
 		env;
 		tokens;
 		cmd_table;
-}
+}*/
 
 //MAIN and LOOP functions
 
@@ -76,6 +76,7 @@ int		builtin_env(char **argv, t_env *env);
 int		builtin_exit(char **argv);
 int		builtin_cd(char **argv, t_env **env_list);
 int		print_export_env(t_env *env);
+int		process_single_export(char *arg, t_env **env_list);
 int		builtin_export(char **argv, t_env **env_list);
 int		builtin_unset(char **argv, t_env **env_list);
 
