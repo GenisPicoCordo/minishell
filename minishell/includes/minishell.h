@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 12:36:53 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:56:40 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,13 @@ int		process_single_export(char *arg, t_env **env_list);
 int		builtin_export(char **argv, t_env **env_list);
 int		builtin_unset(char **argv, t_env **env_list);
 
-//BUILTIN UTILS
+//UTILS
 int		is_valid_identifier(const char *str);
 int		is_numeric(const char *str);
 int		str_is_overflowing_long(const char *str);
+char	*join_path_cmd(char *path, char *cmd);
+char	*search_in_paths(char **paths, char *cmd);
+char	*find_command_path(char *cmd, t_env *env);
 
 //ENV
 t_env	*create_env_node(char *entry);
@@ -94,10 +97,6 @@ void	env_set(t_env **env, const char *key, const char *value);
 void	env_unset(t_env **env, const char *key);
 int		env_list_size(t_env *env);
 char	**env_to_array(t_env *env);
-
-//UTILS
-int		str_is_overflowing_long(const char *str);
-char	*find_command_path(char *cmd, t_env *env);
 
 //LIBERATIONS
 void	free_tokens(t_token *tokens);

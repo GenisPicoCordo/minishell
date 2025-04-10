@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 12:36:32 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 12:36:42 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 13:56:21 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * Si no encuentra el ejecutable, devuelve NULL.
  */
 
-static char	*join_path_cmd(char *path, char *cmd)
+char	*join_path_cmd(char *path, char *cmd)
 {
 	char	*tmp;
 	char	*full;
@@ -30,16 +30,33 @@ static char	*join_path_cmd(char *path, char *cmd)
 	return (full);
 }
 
+char	*search_in_paths(char **paths, char *cmd)
+{
+	char	*full;
+	int		i;
+
+	i = 0;
+	while (paths[i])
+	{
+		full = join_path_cmd(paths[i], cmd);
+		if (full && access(full, X_OK) == 0)
+		{
+			free_split(paths);
+			return (full);
+		}
+		free(full);
+		i++;
+	}
+	free_split(paths);
+	return (NULL);
+}
+
 char	*find_command_path(char *cmd, t_env *env)
 {
 	char	*path_var;
 	char	**paths;
-	char	*full;
-	int		i;
 
-	if (!cmd)
-		return (NULL);
-	if (ft_strchr(cmd, '/'))
+	if (!cmd || ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	path_var = env_get(env, "PATH");
 	if (!path_var)
@@ -47,15 +64,5 @@ char	*find_command_path(char *cmd, t_env *env)
 	paths = ft_split(path_var, ':');
 	if (!paths)
 		return (NULL);
-	i = 0;
-	while (paths[i])
-	{
-		full = join_path_cmd(paths[i], cmd);
-		if (full && access(full, X_OK) == 0)
-			return (free_split(paths), full);
-		free(full);
-		i++;
-	}
-	free_split(paths);
-	return (NULL);
+	return (search_in_paths(paths, cmd));
 }
