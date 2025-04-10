@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 13:56:40 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:12:27 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ typedef struct s_shell
 //EXECUTOR
 int		count_tokens(t_token *list);
 char	**build_argv(t_token *tokens);
-int		execute_tokens(t_token *tokens, char **env);
+int		execute_tokens(t_token *tokens, t_env **env);
 
 //PARSER
 
@@ -176,14 +176,12 @@ int		is_numeric(const char *str);
 int		str_is_overflowing_long(const char *str);
 char	*join_path_cmd(char *path, char *cmd);
 char	*search_in_paths(char **paths, char *cmd);
-//char	*find_command_path(char *cmd, t_env *env);
 char	*find_command_path(char *cmd);
 
 //ENV
 t_env	*create_env_node(char *entry);
 t_env	*env_init(char **envp);
 int		split_key_value(char *arg, char **key, char **value);
-char	*env_get(t_env *env, const char *key);
 void	env_set(t_env **env, const char *key, const char *value);
 void	env_unset(t_env **env, const char *key);
 int		env_list_size(t_env *env);
