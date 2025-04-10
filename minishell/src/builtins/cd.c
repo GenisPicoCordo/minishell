@@ -6,23 +6,13 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:39:49 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 12:09:27 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:02:58 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	validate_cd_args(char **argv)
-{
-	if (argv[1] && argv[2])
-	{
-		ft_putendl_fd("cd: too many arguments", 2);
-		return (1);
-	}
-	return (0);
-}
-
-char	*get_cd_path(char **argv)
+char	*get_cd_target(char **argv, t_env **env_list, char *oldpwd)
 {
 	char	*path;
 
@@ -38,10 +28,11 @@ char	*get_cd_path(char **argv)
 	}
 	if (argv[1][0] == '-' && argv[1][1] == '\0')
 	{
-		path = getenv("OLDPWD");
+		path = env_get(*env_list, "OLDPWD");
 		if (!path)
 		{
 			ft_putendl_fd("cd: OLDPWD not set", 2);
+			free(oldpwd);
 			return (NULL);
 		}
 		ft_putendl_fd(path, 1);
@@ -50,27 +41,25 @@ char	*get_cd_path(char **argv)
 	return (argv[1]);
 }
 
-int	builtin_cd(char **argv)
+int	builtin_cd(char **argv, t_env **env_list)
 {
-	char	*path;
 	char	cwd[1024];
+	char	*path;
 	char	*oldpwd;
 
-	if (validate_cd_args(argv))
-		return (1);
+	if (argv[1] && argv[2])
+		return (ft_putendl_fd("cd: too many arguments", 2), 1);
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 		return (1);
-	path = get_cd_path(argv);
+	path = get_cd_target(argv, env_list, oldpwd);
 	if (!path || chdir(path) != 0)
+		return (perror("cd"), free(oldpwd), 1);
+	if (getcwd(cwd, sizeof(cwd)))
 	{
-		perror("cd");
-		free(oldpwd);
-		return (1);
+		env_set(env_list, "OLDPWD", oldpwd);
+		env_set(env_list, "PWD", cwd);
 	}
-	getcwd(cwd, sizeof(cwd));
-	setenv("OLDPWD", oldpwd, 1);
-	setenv("PWD", cwd, 1);
 	free(oldpwd);
 	return (0);
 }

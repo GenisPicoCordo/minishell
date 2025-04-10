@@ -1,6 +1,6 @@
 NAME := minishell
 CC := cc
-CFLAGS := -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS := -Wall -Werror -Wextra -g #-fsanitize=address
 LDFLAGS := -lreadline
 RM := rm -fr
 LIBFTDIR := libft
@@ -23,11 +23,18 @@ SRC := src/main/main.c \
 		src/builtins/builtins.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \
+    src/builtins/export.c \
+	  src/builtins/unset.c \
 		src/builtins/exit.c \
 		src/builtins/pwd.c \
 		src/builtins/cd.c \
+    src/utils/builtin_utils.c \
 		src/utils/utils.c \
-		src/utils/resolve_path.c
+    src/utils/find_command_path.c \
+		src/utils/resolve_path.c \
+    src/env/env_utils.c \
+	  src/env/env_init.c \
+	  src/env/env_to_array.c 
 
 OBJS := $(SRC:.c=.o)
 

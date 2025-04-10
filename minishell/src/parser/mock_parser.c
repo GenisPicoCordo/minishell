@@ -12,8 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-//Función muy básica que simula el trabajo de Noemi con el parser.
-
 t_token	*create_token_node(char *word, int is_command)
 {
 	t_token	*new;

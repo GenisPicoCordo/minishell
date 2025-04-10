@@ -6,7 +6,7 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 14:33:51 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/09 15:44:43 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/09 15:56:58 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,31 @@ void	free_tokens(t_token *tokens)
 		free(tokens);
 		tokens = tmp;
 	}
+}
+
+void	free_env_list(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env->next;
+		free(env->key);
+		free(env->value);
+		free(env);
+		env = tmp;
+	}
+}
+
+void	clean_exit(t_env *env_list, t_token *tokens, char *input, int exit_code)
+{
+	if (tokens)
+		free_tokens(tokens);
+	if (input)
+		free(input);
+	if (env_list)
+		free_env_list(env_list);
+	exit(exit_code);
 }
 
 void	free_cmd_table(t_cmd_table *table)
