@@ -6,45 +6,48 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:10:57 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/09 12:26:15 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:31:49 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// --- Handlers de comillas y palabras ---
-int	handle_single_quotes(const char *input, int i, t_lexer_ctx *ctx)
+int	handle_single_quotes(t_shell *shell, int i, t_token **head, t_token **tail)
 {
 	int		start;
 	t_token	*token;
 
 	start = ++i;
-	while (input[i] && input[i] != '\'')
+	while (shell->input[i] && shell->input[i] != '\'')
 		i++;
-	if (!input[i])
+	if (!shell->input[i])
 		return (SINGLE_QUOTE_UNCLOSED);
-	token = create_token(&input[start], i - start, T_WORD);
-	append_token(ctx->head, ctx->tail, token);
+	token = create_token(&shell->input[start], i - start, T_WORD);
+	append_token(head, tail, token);
 	return (i + 1);
 }
 
-int	handle_double_quotes(const char *input, int i, t_lexer_ctx *ctx)
+int	handle_double_quotes(t_shell *shell, int i, t_token **head, t_token **tail)
 {
 	int		start;
-	t_token	*token;
 	char	*raw;
 	char	*expanded;
+	t_token	*token;
 
 	start = ++i;
-	while (input[i] && input[i] != '"')
+	while (shell->input[i] && shell->input[i] != '"')
 		i++;
-	if (!input[i])
+	if (!shell->input[i])
 		return (DOUBLE_QUOTE_UNCLOSED);
-	raw = strndup(&input[start], i - start);
-	expanded = expand_string(raw, ctx->env, ctx->last_status);
-	token = create_token(expanded, strlen(expanded), T_WORD);
+	raw = strndup(&shell->input[start], i - start);
+	if (!raw)
+		return (-1);
+	expanded = expand_string(raw, shell);
 	free(raw);
+	if (!expanded)
+		return (-1);
+	token = create_token(expanded, ft_strlen(expanded), T_WORD);
 	free(expanded);
-	append_token(ctx->head, ctx->tail, token);
+	append_token(head, tail, token);
 	return (i + 1);
 }

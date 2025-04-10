@@ -6,7 +6,7 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:46:39 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/09 15:56:21 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:30:52 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_lexer_ctx
-{
-	char		**env;
-	int			last_status;
-	t_token		**head;
-	t_token		**tail;
-}	t_lexer_ctx;
-
 typedef struct s_error_entry
 {
 	int		code;
@@ -92,6 +84,15 @@ typedef struct s_cmd_table
 	int		count;
 }	t_cmd_table;
 
+typedef struct s_shell
+{
+	int			last_status;	// último código de retorno
+	char		**env;			// entorno
+	t_token		*tokens;		// tokens actuales
+	t_cmd_table	*cmd_table;		// comandos parseados
+	char		*input;			// línea original del input
+}	t_shell;
+
 //MAIN and LOOP functions
 
 //EXECUTOR
@@ -105,8 +106,8 @@ int		execute_tokens(t_token *tokens, char **env);
 t_token	*create_token_node(char *word, int is_command);
 void	free_split(char **split);
 t_token	*mock_tokenize_input(char *input);
-t_token	*tokenize_input(const char *input, char **env, int last_status);
-int		process_tokens(const char *input, t_lexer_ctx *ctx);
+t_token	*tokenize_input(t_shell *shell);
+int		process_tokens(t_shell *shell, t_token **head, t_token **tail);
 
 // ──────────────────────────────────────────────────────────────
 // LEXER: UTILS
@@ -120,10 +121,10 @@ void	append_token(t_token **head, t_token **tail, t_token *new);
 // LEXER: HANDLERS
 // ──────────────────────────────────────────────────────────────
 
-int		handle_word(const char *input, int i, t_lexer_ctx *ctx);
-int		handle_single_quotes(const char *input, int i, t_lexer_ctx *ctx);
-int		handle_double_quotes(const char *input, int i, t_lexer_ctx *ctx);
-int		handle_operator(const char *input, int i, t_lexer_ctx *ctx);
+int		handle_word(t_shell *shell, int i, t_token **head, t_token **tail);
+int		handle_single_quotes(t_shell *shell, int i, t_token **head, t_token **tail);
+int		handle_double_quotes(t_shell *shell, int i, t_token **head, t_token **tail);
+int		handle_operator(t_shell *shell, int i, t_token **head, t_token **tail);
 
 // ──────────────────────────────────────────────────────────────
 // LEXER: OPERATORS
@@ -137,8 +138,10 @@ t_token	*handle_redirect(const char *input, int *i);
 // LEXER: EXPANSION
 // ──────────────────────────────────────────────────────────────
 
-char	*expand_variable(const char *str, int *i, char **env, int last_status);
-char	*expand_string(const char *input, char **env, int last_status);
+char	*expand_string(const char *input, t_shell *shell);
+char	*expand_loop(const char *input, t_shell *shell, char *result);
+char	*expand_variable(const char *str, int *i, t_shell *shell);
+char	*expand_home(const char *input);
 
 // ──────────────────────────────────────────────────────────────
 // LEXER: ERRORES
@@ -169,7 +172,7 @@ void	free_tokens(t_token *tokens);
 void	free_cmd_table(t_cmd_table *table);
 
 void	print_cmd_table(t_cmd_table *table);
-int		validate_cmd_table(t_cmd_table *table, char **env);
+int		validate_cmd_table(t_shell *shell);
 char	**get_heredoc_names(t_token *redirs);
 
 #endif

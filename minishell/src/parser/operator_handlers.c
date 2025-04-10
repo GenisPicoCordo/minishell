@@ -6,7 +6,7 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:14:02 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/09 14:20:32 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:55:52 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,17 @@ t_token	*handle_redirect(const char *input, int *i)
 	return (NULL);
 }
 
-int	handle_operator(const char *input, int i, t_lexer_ctx *ctx)
+int	handle_operator(t_shell *shell, int i, t_token **head, t_token **tail)
 {
 	t_token	*token;
 
-	token = handle_logical_ops(input, &i);
+	token = handle_logical_ops(shell->input, &i);
 	if (!token)
-		token = handle_pipe(input, &i);
+		token = handle_pipe(shell->input, &i);
 	if (!token)
-		token = handle_redirect(input, &i);
+		token = handle_redirect(shell->input, &i);
 	if (!token)
 		return (INVALID_OPERATOR);
-	append_token(ctx->head, ctx->tail, token);
+	append_token(head, tail, token);
 	return (i + 1);
 }

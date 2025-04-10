@@ -1,7 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   resolve_path.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/10 11:11:26 by ncampo-f          #+#    #+#             */
+/*   Updated: 2025/04/10 11:11:35 by ncampo-f         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
-#include <unistd.h>
-#include <stdlib.h>
-#include <string.h>
 
 char	*find_command_path(char *cmd)
 {
