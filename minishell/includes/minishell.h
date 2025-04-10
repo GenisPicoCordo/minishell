@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 15:12:27 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:34:20 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct s_cmd_table
 typedef struct s_shell
 {
 	int			last_status;	// último código de retorno
-	char		**env;			// entorno
+	t_env		*env_list;			// entorno
 	t_token		*tokens;		// tokens actuales
 	t_cmd_table	*cmd_table;		// comandos parseados
 	char		*input;			// línea original del input
