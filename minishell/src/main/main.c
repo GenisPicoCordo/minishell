@@ -6,7 +6,7 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 17:29:27 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 15:14:16 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:27:51 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_env	*env_list;
 	t_shell	shell;
 
 	(void)argv;
@@ -23,8 +22,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_putendl_fd("minishell: this program does not take arguments", 2);
 		return (1);
 	}
-	env_list = env_init(envp);
-	shell.env = envp;
+	shell.env_list = env_init(envp);
 	shell.last_status = 0;
 	while (1)
 	{
@@ -32,7 +30,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!shell.input)
 		{
 			printf("exit\n");
-			clean_exit(env_list, NULL, NULL, 0);
+			clean_exit(shell.env_list, NULL, NULL, 0);
 			break ;
 		}
 		if (*shell.input)
@@ -53,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 				print_cmd_table(shell.cmd_table);
 				free_cmd_table(shell.cmd_table);
 			}
-			shell.last_status = execute_tokens(shell.tokens, &env_list);
+			shell.last_status = execute_tokens(shell.tokens, &shell.env_list);
 			free_tokens(shell.tokens);
 		}
 		free(shell.input);

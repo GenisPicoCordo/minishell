@@ -6,7 +6,7 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 15:12:27 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:15:22 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ typedef struct s_cmd_table
 
 typedef struct s_shell
 {
-	int			last_status;	// último código de retorno
-	char		**env;			// entorno
-	t_token		*tokens;		// tokens actuales
-	t_cmd_table	*cmd_table;		// comandos parseados
-	char		*input;			// línea original del input
+	int			last_status;
+	t_env		*env_list;
+	t_token		*tokens;
+	t_cmd_table	*cmd_table;
+	char		*input;
 }	t_shell;
 
 //MAIN and LOOP functions

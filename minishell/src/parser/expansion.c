@@ -6,7 +6,7 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:18:08 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/10 12:30:18 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:18:36 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,3 @@ char	*expand_string(const char *input, t_shell *shell)
 		return (NULL);
 	return (expand_loop(input, shell, result));
 }
-
