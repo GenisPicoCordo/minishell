@@ -6,7 +6,7 @@
 /*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 17:29:27 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 11:20:25 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:14:16 by ncampo-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 				print_cmd_table(shell.cmd_table);
 				free_cmd_table(shell.cmd_table);
 			}
-			shell.last_status = execute_tokens(shell.tokens, env_list);
+			shell.last_status = execute_tokens(shell.tokens, &env_list);
 			free_tokens(shell.tokens);
 		}
 		free(shell.input);
