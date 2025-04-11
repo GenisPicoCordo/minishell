@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 16:34:20 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:43:41 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,11 +177,17 @@ int		str_is_overflowing_long(const char *str);
 char	*join_path_cmd(char *path, char *cmd);
 char	*search_in_paths(char **paths, char *cmd);
 char	*find_command_path(char *cmd);
+size_t	ft_max(size_t a, size_t b);
+int		env_len(t_env *env);
+void	sort_env_array(t_env **arr, int len);
+void	print_export_entry(t_env *var);
 
 //ENV
 t_env	*create_env_node(char *entry);
 t_env	*env_init(char **envp);
 int		split_key_value(char *arg, char **key, char **value);
+void	update_value(t_env *env, const char *value);
+t_env	*new_env_node(const char *key, const char *value);
 void	env_set(t_env **env, const char *key, const char *value);
 void	env_unset(t_env **env, const char *key);
 int		env_list_size(t_env *env);
