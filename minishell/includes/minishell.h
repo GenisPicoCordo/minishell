@@ -25,6 +25,7 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <errno.h>
+# include <fcntl.h>
 
 //ERROR messages
 # define ERR_SINGLE_QUOTE "Syntax error: single quote not closed"
@@ -105,7 +106,12 @@ typedef struct s_shell
 //EXECUTOR
 int		count_tokens(t_token *list);
 char	**build_argv(t_token *tokens);
-int		execute_tokens(t_token *tokens, t_env **env);
+int 	execute_tokens(t_cmd_table *table, t_env **env_list);
+int		execute_pipeline(t_cmd_table *table, t_env **env_list);
+int 	apply_redirections(t_token *redirs);
+int		preprocess_heredocs(t_cmd_table *table);
+char *generate_tmp_filename(void);
+char *create_heredoc_file(const char *delimiter);
 
 //PARSER
 

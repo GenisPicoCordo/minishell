@@ -9,6 +9,8 @@ INCLUDES := -I includes -I $(LIBFTDIR)
 
 SRC := src/main/main.c \
 		src/executor/executor.c \
+		src/executor/redirections.c \
+		src/executor/heredoc.c \
 		src/liberations/liberations.c \
 		src/errors/lexer_errors.c \
 		src/parser/mock_parser.c \

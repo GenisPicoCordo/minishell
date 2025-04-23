@@ -31,27 +31,31 @@ int	main(int argc, char **argv, char **envp)
 		{
 			printf("exit\n");
 			clean_exit(shell.env_list, NULL, NULL, 0);
-			break ;
+			break;
 		}
 		if (*shell.input)
 			add_history(shell.input);
+
 		shell.tokens = tokenize_input(&shell);
 		if (shell.tokens)
 		{
 			shell.cmd_table = parse_tokens(shell.tokens);
-			if (shell.cmd_table)
+			if (shell.cmd_table && validate_cmd_table(&shell))
 			{
-				if (!validate_cmd_table(&shell))
+				print_cmd_table(shell.cmd_table);
+				if (preprocess_heredocs(shell.cmd_table))
 				{
 					free_cmd_table(shell.cmd_table);
 					free_tokens(shell.tokens);
 					free(shell.input);
-					continue ;
+					continue;
 				}
-				print_cmd_table(shell.cmd_table);
-				free_cmd_table(shell.cmd_table);
+				if (shell.cmd_table->count == 1)
+					shell.last_status = execute_tokens(shell.cmd_table, &shell.env_list);
+				else
+					shell.last_status = execute_pipeline(shell.cmd_table, &shell.env_list);
 			}
-			shell.last_status = execute_tokens(shell.tokens, &shell.env_list);
+			free_cmd_table(shell.cmd_table);
 			free_tokens(shell.tokens);
 		}
 		free(shell.input);
