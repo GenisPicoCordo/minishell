@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 # include <sys/types.h>
+# include <sys/ioctl.h> 
 # include <errno.h>
 # include <fcntl.h>
 
@@ -101,6 +102,17 @@ typedef struct s_shell
 	char		*input;			// línea original del input
 }	t_shell;
 
+typedef enum e_shell_state
+{
+	SHELL_NORMAL = 0,
+	SHELL_CHILD = 1,
+	SHELL_HEREDOC = 2,
+	SHELL_HEREDOC_INTERRUPTED = 3
+}	t_shell_state;
+
+# define GET 0
+# define SET 1
+
 //MAIN and LOOP functions
 
 //EXECUTOR
@@ -162,6 +174,16 @@ char	*expand_home(const char *input);
 void	print_quote_error(t_quote_error err);
 
 t_cmd_table	*parse_tokens(t_token *tokens);
+
+// ──────────────────────────────────────────────────────────────
+// SIGNALS
+// ──────────────────────────────────────────────────────────────
+
+int		signal_flag(int mode, int val);
+void	setup_signal_handlers(void);
+void	handle_signal(int signo);
+void	handle_sigint(void);
+void	handle_sigquit(void);
 
 //BUILTINS
 int		is_builtin(char *cmd);

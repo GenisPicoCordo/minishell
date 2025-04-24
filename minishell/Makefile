@@ -22,6 +22,7 @@ SRC := src/main/main.c \
 		src/parser/parser.c \
 		src/parser/parser_validation.c \
 		src/parser/heredoc_utils.c \
+		src/signals/signals.c \
 		src/builtins/builtins.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \

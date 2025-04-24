@@ -26,10 +26,14 @@ int	preprocess_heredocs(t_cmd_table *table)
 		{
 			if (redir->type == T_HEREDOC && redir->next)
 			{
+				signal_flag(SET, SHELL_HEREDOC);
 				tmp_path = create_heredoc_file(redir->next->content);
-				if (!tmp_path)
+
+				if (signal_flag(GET, 0) == SHELL_HEREDOC_INTERRUPTED || !tmp_path)
+				{
+					signal_flag(SET, SHELL_NORMAL);
 					return (1);
-				// Cambiamos el tipo del redir a T_REDIRECT_IN y el contenido al path
+				}
 				redir->type = T_REDIRECT_IN;
 				free(redir->next->content);
 				redir->next->content = tmp_path;
@@ -38,18 +42,18 @@ int	preprocess_heredocs(t_cmd_table *table)
 		}
 		i++;
 	}
+	signal_flag(SET, SHELL_NORMAL);
 	return (0);
 }
 
-char *generate_tmp_filename(void)
+char	*generate_tmp_filename(void)
 {
 	static int	id = 0;
 	char		*number;
 	char		*filename;
-	char		*prefix = "/tmp/minishell_heredoc_";
 
 	number = ft_itoa(id++);
-	filename = ft_strjoin(prefix, number);
+	filename = ft_strjoin("/tmp/minishell_heredoc_", number);
 	free(number);
 	return (filename);
 }
@@ -57,29 +61,39 @@ char *generate_tmp_filename(void)
 char *create_heredoc_file(const char *delimiter)
 {
 	char	*line;
-	int		fd;
 	char	*tmp_name = generate_tmp_filename();
+	int		fd;
 
+	signal_flag(SET, SHELL_HEREDOC);
 	fd = open(tmp_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (fd < 0)
-	{
-		perror("heredoc open");
-		free(tmp_name);
-		return (NULL);
-	}
+		return (perror("heredoc open"), free(tmp_name), NULL);
 
 	while (1)
-    {
-	    line = readline("> ");
-	    if (!line || (ft_strlen(line) == ft_strlen(delimiter)
-		    && ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0))
-		    break;
+	{
+		line = readline("> ");
+		if (signal_flag(GET, 0) == SHELL_HEREDOC_INTERRUPTED)
+		{
+			if (line)
+				free(line);
+			close(fd);
+			unlink(tmp_name);
+			free(tmp_name);
+			signal_flag(SET, SHELL_NORMAL);
+			return (NULL);
+		}
+		if (!line || ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
+		{
+			free(line);
+			break;
+		}
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);
 	}
-	free(line);
 	close(fd);
-	return (tmp_name); // No strdup: ya es dinámico
+	signal_flag(SET, SHELL_NORMAL);
+	return (tmp_name);
 }
+
 

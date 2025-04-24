@@ -22,16 +22,18 @@ int	main(int argc, char **argv, char **envp)
 		ft_putendl_fd("minishell: this program does not take arguments", 2);
 		return (1);
 	}
+	setup_signal_handlers();
 	shell.env_list = env_init(envp);
 	shell.last_status = 0;
+
 	while (1)
 	{
+		signal_flag(SET, SHELL_NORMAL);
 		shell.input = readline("minishell> ");
 		if (!shell.input)
 		{
-			printf("exit\n");
+			write(1, "exit\n", 5);
 			clean_exit(shell.env_list, NULL, NULL, 0);
-			break;
 		}
 		if (*shell.input)
 			add_history(shell.input);
@@ -42,7 +44,6 @@ int	main(int argc, char **argv, char **envp)
 			shell.cmd_table = parse_tokens(shell.tokens);
 			if (shell.cmd_table && validate_cmd_table(&shell))
 			{
-				print_cmd_table(shell.cmd_table);
 				if (preprocess_heredocs(shell.cmd_table))
 				{
 					free_cmd_table(shell.cmd_table);
