@@ -33,9 +33,6 @@
 # define ERR_DOUBLE_QUOTE "Syntax error: double quote not closed"
 # define ERR_INV_OPERATOR "Syntax error"
 # define ERR_UNKNOWN_QUOTE "Unknown quote error"
-
-//static int			g_var;
-
 typedef enum e_type_tokens
 {
 	T_WORD,
@@ -226,7 +223,7 @@ void	free_tokens(t_token *tokens);
 void	free_cmd_table(t_cmd_table *table);
 void	free_env_list(t_env *env);
 void	clean_exit(t_env *env_list, t_token *tokens, \
-	char *input, int exit_code);
+char *input, int exit_code);
 
 void	print_cmd_table(t_cmd_table *table);
 int		validate_cmd_table(t_shell *shell);
