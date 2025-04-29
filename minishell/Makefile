@@ -8,9 +8,14 @@ LIBFT := $(LIBFTDIR)/libft.a
 INCLUDES := -I includes -I $(LIBFTDIR)
 
 SRC := src/main/main.c \
+		src/main/main_utils.c \
 		src/executor/executor.c \
+		src/executor/executor_utils1.c \
+		src/executor/executor_utils2.c \
+		src/executor/executor_utils3.c \
 		src/executor/redirections.c \
 		src/executor/heredoc.c \
+		src/executor/heredoc_utils.c \
 		src/liberations/liberations.c \
 		src/errors/lexer_errors.c \
 		src/parser/mock_parser.c \
@@ -20,9 +25,12 @@ SRC := src/main/main.c \
 		src/parser/operator_handlers.c \
 		src/parser/quote_handlers.c \
 		src/parser/parser.c \
+		src/parser/parser_utils1.c \
+		src/parser/parser_utils2.c \
 		src/parser/parser_validation.c \
 		src/parser/heredoc_utils.c \
 		src/signals/signals.c \
+		src/signals/signals_utils.c \
 		src/builtins/builtins.c \
 		src/builtins/echo.c \
 		src/builtins/env.c \

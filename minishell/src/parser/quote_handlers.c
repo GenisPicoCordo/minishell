@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:10:57 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/10 12:31:49 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:56:40 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	handle_double_quotes(t_shell *shell, int i, t_token **head, t_token **tail)
 		i++;
 	if (!shell->input[i])
 		return (DOUBLE_QUOTE_UNCLOSED);
-	raw = strndup(&shell->input[start], i - start);
+	raw = ft_strndup(&shell->input[start], i - start);
 	if (!raw)
 		return (-1);
 	expanded = expand_string(raw, shell);

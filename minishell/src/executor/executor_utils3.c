@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   executor_utils3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 14:54:53 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/29 18:08:25 by gpico-co         ###   ########.fr       */
+/*   Created: 2025/04/29 14:58:28 by gpico-co          #+#    #+#             */
+/*   Updated: 2025/04/29 14:58:40 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_cmd_table	*parse_tokens(t_token *tokens)
+int	count_tokens(t_token *list)
 {
-	t_cmd_table	*table;
-	int			count;
+	int	count;
 
-	count = count_pipes(tokens);
-	if (!init_cmd_table(&table, count))
-		return (NULL);
-	fill_cmd_table(table, tokens);
-	return (table);
+	count = 0;
+	while (list)
+	{
+		if (list->type == T_COMMANDS || list->type == T_ARGUMENT
+			|| list->type == T_WORD)
+			count++;
+		list = list->next;
+	}
+	return (count);
 }

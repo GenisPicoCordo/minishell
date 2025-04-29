@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_validation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 11:17:49 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/10 12:07:51 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:48:14 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,27 @@ int	cmd_exists(char *cmd)
 	return (0);
 }
 
+static int	handle_cmd_error(t_shell *shell, char *cmd, int code)
+{
+	if (code == 127)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": command not found", 2);
+		shell->last_status = 127;
+		return (0);
+	}
+	if (code == 126)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": Permission denied", 2);
+		shell->last_status = 126;
+		return (0);
+	}
+	return (1);
+}
+
 int	validate_cmd_table(t_shell *shell)
 {
 	int			i;
@@ -54,27 +75,14 @@ int	validate_cmd_table(t_shell *shell)
 		cmd = table->cmds[i];
 		if (!cmd.cmd)
 		{
-			ft_putendl_fd("minishell: syntax error near unexpected token `|`", 2);
+			ft_putendl_fd("minishell: syntax error near \
+				unexpected token `|`", 2);
 			shell->last_status = 2;
 			return (0);
 		}
 		code = cmd_exists(cmd.cmd);
-		if (code == 127)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd.cmd, 2);
-			ft_putendl_fd(": command not found", 2);
-			shell->last_status = 127;
+		if (!handle_cmd_error(shell, cmd.cmd, code))
 			return (0);
-		}
-		if (code == 126)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(cmd.cmd, 2);
-			ft_putendl_fd(": Permission denied", 2);
-			shell->last_status = 126;
-			return (0);
-		}
 		i++;
 	}
 	return (1);

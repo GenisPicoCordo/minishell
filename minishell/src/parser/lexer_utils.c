@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:08:48 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/09 14:21:45 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:54:58 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_token	*create_token(const char *start, int len, t_token_type type)
 	token = malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->content = strndup(start, len);
+	token->content = ft_strndup(start, len);
 	token->type = type;
 	token->next = NULL;
 	return (token);

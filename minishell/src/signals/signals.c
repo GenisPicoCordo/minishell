@@ -1,47 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                         :+:      :+:    :+:    */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:46:54 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 15:11:02 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/29 15:38:42 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	g_shell_state = SHELL_NORMAL;
-
-int	signal_flag(int mode, int val)
-{
-	if (mode == SET)
-		g_shell_state = val;
-	return (g_shell_state);
-}
+int	g_shell_state = SHELL_NORMAL;
 
 void	handle_sigint(void)
 {
-	int	state = signal_flag(GET, 0);
-	write(STDERR_FILENO, "\n", 1);
+	int	state;
 
+	state = signal_flag(GET, 0);
+	write(STDERR_FILENO, "\n", 1);
 	if (state == SHELL_HEREDOC)
-	{
-		signal_flag(SET, SHELL_HEREDOC_INTERRUPTED);
-		rl_done = 1;
-		// Forzamos simulación de Enter para salir de readline automáticamente
-		char dummy = '\n';
-		ioctl(STDIN_FILENO, TIOCSTI, &dummy);
-	}
+		handle_signal_heredoc_interrupt();
 	else if (state == SHELL_CHILD)
 		return ;
 	else
-	{
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
+		handle_normal_interrupt();
 }
 
 void	handle_sigquit(void)

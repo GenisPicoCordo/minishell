@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:18:08 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/10 12:30:18 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:53:18 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*expand_loop(const char *input, t_shell *shell, char *result)
 			start = i;
 			while (input[i] && input[i] != '$')
 				i++;
-			tmp = strndup(&input[start], i - start);
+			tmp = ft_strndup(&input[start], i - start);
 			result = ft_strjoin_free(result, tmp);
 		}
 	}
@@ -90,4 +90,3 @@ char	*expand_string(const char *input, t_shell *shell)
 		return (NULL);
 	return (expand_loop(input, shell, result));
 }
-

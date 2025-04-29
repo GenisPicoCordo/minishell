@@ -46,12 +46,27 @@ void	free_split(char **split)
 	free(split);
 }
 
+static int	append_token_node(t_token **head, t_token **current, \
+	char *word, int is_command)
+{
+	t_token	*new;
+
+	new = create_token_node(word, is_command);
+	if (!new)
+		return (1);
+	if (!*head)
+		*head = new;
+	else
+		(*current)->next = new;
+	*current = new;
+	return (0);
+}
+
 t_token	*mock_tokenize_input(char *input)
 {
 	char		**words;
 	t_token		*head;
 	t_token		*current;
-	t_token		*new;
 	int			i;
 
 	words = ft_split(input, ' ');
@@ -62,14 +77,8 @@ t_token	*mock_tokenize_input(char *input)
 	i = 0;
 	while (words[i])
 	{
-		new = create_token_node(words[i], (i == 0));
-		if (!new)
+		if (append_token_node(&head, &current, words[i], i == 0))
 			break ;
-		if (!head)
-			head = new;
-		else
-			current->next = new;
-		current = new;
 		i++;
 	}
 	free_split(words);

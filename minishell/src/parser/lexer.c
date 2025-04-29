@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 14:30:20 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/10 12:32:27 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/29 17:55:34 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	handle_word(t_shell *shell, int i, t_token **head, t_token **tail)
 	while (shell->input[i] && shell->input[i] != ' '
 		&& !ft_strchr("|<>\"'", shell->input[i]))
 		i++;
-	raw = strndup(&shell->input[start], i - start);
+	raw = ft_strndup(&shell->input[start], i - start);
 	if (!raw)
 		return (-1);
 	expanded = expand_string(raw, shell);

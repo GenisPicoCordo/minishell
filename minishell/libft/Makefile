@@ -6,7 +6,7 @@
 #    By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/26 15:18:39 by gpico-co          #+#    #+#              #
-#    Updated: 2025/01/28 15:35:23 by gpico-co         ###   ########.fr        #
+#    Updated: 2025/04/29 17:59:05 by gpico-co         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,7 +54,8 @@ SRC = ft_itoa.c \
 	  ft_free.c \
 	  get_next_line.c \
 	  ft_count_words.c	\
-	  ft_strjoin_free.c
+	  ft_strjoin_free.c \
+	  ft_strndup.c
 	  
 OBJ = $(SRC:.c=.o)
 

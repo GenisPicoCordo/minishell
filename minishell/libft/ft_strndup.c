@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 14:54:53 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/29 18:08:25 by gpico-co         ###   ########.fr       */
+/*   Created: 2025/04/29 17:51:42 by gpico-co          #+#    #+#             */
+/*   Updated: 2025/04/29 17:51:45 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-t_cmd_table	*parse_tokens(t_token *tokens)
+char	*ft_strndup(const char *s, size_t n)
 {
-	t_cmd_table	*table;
-	int			count;
+	char	*dup;
+	size_t	i;
 
-	count = count_pipes(tokens);
-	if (!init_cmd_table(&table, count))
+	dup = malloc(sizeof(char) * (n + 1));
+	if (!dup)
 		return (NULL);
-	fill_cmd_table(table, tokens);
-	return (table);
+	i = 0;
+	while (s[i] && i < n)
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
 }
