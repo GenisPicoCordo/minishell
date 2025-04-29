@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:39:49 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 15:16:39 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:10:23 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_cd_target(char **argv, char *oldpwd)
+static char	*get_cd_target(char **argv, t_env **env_list, char *oldpwd)
 {
 	char	*path;
 
 	if (!argv[1] || (argv[1][0] == '~' && argv[1][1] == '\0'))
 	{
-		path = getenv("HOME");
+		path = env_get(*env_list, "HOME");
 		if (!path)
 		{
 			ft_putendl_fd("cd: HOME not set", 2);
@@ -28,7 +28,7 @@ char	*get_cd_target(char **argv, char *oldpwd)
 	}
 	if (argv[1][0] == '-' && argv[1][1] == '\0')
 	{
-		path = getenv("OLDPWD");
+		path = env_get(*env_list, "OLDPWD");
 		if (!path)
 		{
 			ft_putendl_fd("cd: OLDPWD not set", 2);
@@ -52,7 +52,7 @@ int	builtin_cd(char **argv, t_env **env_list)
 	oldpwd = getcwd(NULL, 0);
 	if (!oldpwd)
 		return (1);
-	path = get_cd_target(argv, oldpwd);
+	path = get_cd_target(argv, env_list, oldpwd);
 	if (!path || chdir(path) != 0)
 		return (perror("cd"), free(oldpwd), 1);
 	if (getcwd(cwd, sizeof(cwd)))

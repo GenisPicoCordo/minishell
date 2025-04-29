@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:58:24 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/11 14:42:37 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:56:13 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,15 @@ t_env	*new_env_node(const char *key, const char *value)
 		new->value = NULL;
 	new->next = NULL;
 	return (new);
+}
+
+char	*env_get(t_env *env, const char *key)
+{
+	while (env)
+	{
+		if (ft_strncmp(env->key, key, ft_strlen(key) + 1) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
 }

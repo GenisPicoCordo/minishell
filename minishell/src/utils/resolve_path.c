@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 11:11:26 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/29 15:18:08 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:09:45 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ char	*search_paths(char **paths, char *cmd)
 	return (NULL);
 }
 
-char	*find_command_path(char *cmd)
+char	*find_command_path(char *cmd, t_env *env_list)
 {
 	char	*path_var;
 	char	**paths;
 	char	*result;
 
-	path_var = getenv("PATH");
+	path_var = env_get(env_list, "PATH");
 	if (!path_var || ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
 	paths = ft_split(path_var, ':');

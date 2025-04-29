@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 18:15:34 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:14:02 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ t_token			*handle_redirect(const char *input, int *i);
 char			*expand_string(const char *input, t_shell *shell);
 char			*expand_loop(const char *input, t_shell *shell, char *result);
 char			*expand_variable(const char *str, int *i, t_shell *shell);
-char			*expand_home(const char *input);
+char			*expand_home(const char *input, t_shell *shell);
 
 // ──────────────────────────────────────────────────────────────
 // LEXER: ERRORES
@@ -261,7 +261,7 @@ char			*join_path_cmd(char *path, char *cmd);
 char			*search_paths(char **paths, char *cmd);
 char			*build_full_path(char *dir, char *cmd);
 char			*search_in_paths(char **paths, char *cmd);
-char			*find_command_path(char *cmd);
+char			*find_command_path(char *cmd, t_env *env_list);
 size_t			ft_max(size_t a, size_t b);
 int				env_len(t_env *env);
 void			sort_env_array(t_env **arr, int len);
@@ -277,6 +277,7 @@ void			env_set(t_env **env, const char *key, const char *value);
 void			env_unset(t_env **env, const char *key);
 int				env_list_size(t_env *env);
 char			**env_to_array(t_env *env);
+char			*env_get(t_env *env, const char *key);
 
 //LIBERATIONS
 void			free_tokens(t_token *tokens);

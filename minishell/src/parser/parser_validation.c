@@ -6,13 +6,13 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 11:17:49 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/29 17:48:14 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:21:15 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	cmd_exists(char *cmd)
+static	int	cmd_exists(char *cmd, t_env *env_list)
 {
 	char	*path;
 
@@ -28,7 +28,7 @@ int	cmd_exists(char *cmd)
 			return (126);
 		return (0);
 	}
-	path = find_command_path(cmd);
+	path = find_command_path(cmd, env_list);
 	if (!path)
 		return (127);
 	if (access(path, X_OK) != 0)
@@ -80,7 +80,7 @@ int	validate_cmd_table(t_shell *shell)
 			shell->last_status = 2;
 			return (0);
 		}
-		code = cmd_exists(cmd.cmd);
+		code = cmd_exists(cmd.cmd, shell->env_list);
 		if (!handle_cmd_error(shell, cmd.cmd, code))
 			return (0);
 		i++;

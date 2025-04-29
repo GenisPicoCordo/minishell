@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:18:08 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/29 17:53:18 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:12:56 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,24 @@ char	*expand_variable(const char *str, int *i, t_shell *shell)
 	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 		var[j++] = str[(*i)++];
 	var[j] = '\0';
-	value = getenv(var);
+	value = env_get(shell->env_list, var);
 	if (value)
 		return (ft_strdup(value));
 	return (ft_strdup(""));
 }
 
-char	*expand_home(const char *input)
+char	*expand_home(const char *input, t_shell *shell)
 {
 	char	*home;
 	char	*rest;
 	char	*tmp;
 
-	home = getenv("HOME");
+	home = env_get(shell->env_list, "HOME");
 	if (!home)
 		return (NULL);
 	rest = ft_strdup(&input[1]);
+	if (!rest)
+		return (NULL);
 	tmp = ft_strjoin(home, rest);
 	free(rest);
 	return (tmp);
@@ -81,7 +83,7 @@ char	*expand_string(const char *input, t_shell *shell)
 
 	if (input[0] == '~' && (input[1] == '/' || input[1] == '\0'))
 	{
-		result = expand_home(input);
+		result = expand_home(input, shell);
 		if (result)
 			return (result);
 	}

@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:55:44 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 14:56:38 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/29 19:18:03 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_external(t_cmd *cmd, t_env **env_list)
 	char	*cmd_path;
 	char	**envp;
 
-	cmd_path = find_command_path(cmd->cmd);
+	cmd_path = find_command_path(cmd->cmd, *env_list);
 	envp = env_to_array(*env_list);
 	if (!cmd_path || !envp)
 	{
@@ -74,7 +74,7 @@ void	exec_builtin_or_external(t_cmd_table *t, t_env **env,
 		t_pipeinfo *info)
 {
 	t_cmd	*cmd;
-	char	*path;
+	char	*cmd_path;
 	char	**envp;
 
 	cmd = &t->cmds[info->i];
@@ -82,15 +82,15 @@ void	exec_builtin_or_external(t_cmd_table *t, t_env **env,
 		exit(1);
 	if (is_builtin(cmd->cmd))
 		exit(execute_builtin(cmd->args, env));
-	path = find_command_path(cmd->cmd);
+	cmd_path = find_command_path(cmd->cmd, *env);
 	envp = env_to_array(*env);
-	if (!path)
+	if (!cmd_path)
 	{
 		ft_putstr_fd("minishell: command not found: ", 2);
 		ft_putendl_fd(cmd->cmd, 2);
 		exit(127);
 	}
-	execve(path, cmd->args, envp);
+	execve(cmd_path, cmd->args, envp);
 	perror("execve");
 	exit(1);
 }
