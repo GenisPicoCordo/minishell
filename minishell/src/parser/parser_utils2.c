@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:07:58 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 18:12:45 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:27:00 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	fill_command_args(t_cmd *cmd, t_token **tmp, t_token *end)
 	while (*tmp != end && *tmp)
 	{
 		if ((*tmp)->type == T_WORD)
-			handle_word(cmd, (*tmp)->content, &arg_index);
+			parser_handle_word(cmd, (*tmp)->content, &arg_index);
 		else if ((*tmp)->type >= T_REDIRECT_IN && (*tmp)->type <= T_HEREDOC)
 			handle_redir(cmd, tmp);
 		*tmp = (*tmp)->next;
