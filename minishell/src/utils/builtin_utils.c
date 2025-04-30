@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:24:02 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 18:43:43 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/30 11:41:26 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ int	is_numeric(const char *str)
 {
 	int	i;
 
+	if (!str || !*str)
+		return (0);
 	i = 0;
-	if (str[0] == '-' || str[0] == '+')
+	if (str[0] == '+' || str[0] == '-')
 		i++;
 	while (str[i])
 	{
-		if (str[i] < '0' || str[i] > '9')
+		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
 	}
