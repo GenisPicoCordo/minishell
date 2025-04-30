@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:02:06 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 14:53:33 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:22:04 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ char	*create_heredoc_file(const char *delimiter)
 	}
 	signal_flag(SET, SHELL_HEREDOC);
 	if (write_heredoc_lines(fd, delimiter, tmp_name))
+	{
+		signal_flag(SET, SHELL_NORMAL);
 		return (NULL);
+	}
 	close(fd);
 	signal_flag(SET, SHELL_NORMAL);
 	return (tmp_name);
@@ -39,7 +42,6 @@ int	handle_heredoc_token(t_token *redir)
 {
 	char	*tmp_path;
 
-	signal_flag(SET, SHELL_HEREDOC);
 	tmp_path = create_heredoc_file(redir->next->content);
 	if (signal_flag(GET, 0) == SHELL_HEREDOC_INTERRUPTED || !tmp_path)
 	{
@@ -70,6 +72,6 @@ int	preprocess_heredocs(t_cmd_table *table)
 		}
 		i++;
 	}
-	signal_flag(SET, SHELL_NORMAL);
+	//signal_flag(SET, SHELL_NORMAL);
 	return (0);
 }

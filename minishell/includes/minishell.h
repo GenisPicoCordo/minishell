@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 19:14:02 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/30 18:05:22 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,8 @@ typedef enum e_shell_state
 	SHELL_NORMAL = 0,
 	SHELL_CHILD = 1,
 	SHELL_HEREDOC = 2,
-	SHELL_HEREDOC_INTERRUPTED = 3
+	SHELL_HEREDOC_INTERRUPTED = 3,
+	SHELL_INTERRUPTED = 4
 }	t_shell_state;
 
 typedef struct s_pipeinfo
@@ -122,7 +123,7 @@ extern int	g_shell_state;
 
 //MAIN and LOOP functions
 void			exit_if_eof(t_shell *shell);
-void			execute_command_loop(t_shell *shell);
+int				execute_command_loop(t_shell *shell);
 void			main_loop(t_shell *shell);
 
 //EXECUTOR
@@ -235,6 +236,7 @@ void			fill_cmd_table(t_cmd_table *table, t_token *tokens);
 int				signal_flag(int mode, int val);
 void			handle_signal_heredoc_interrupt(void);
 void			handle_normal_interrupt(void);
+void			handle_child_interrupt(void);
 void			handle_sigint(void);
 void			handle_sigquit(void);
 void			handle_signal(int signo);

@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:52:39 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 14:53:43 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/30 15:22:18 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	handle_heredoc_interrupt(int fd, char *line, char *tmp_name)
 	close(fd);
 	unlink(tmp_name);
 	free(tmp_name);
-	signal_flag(SET, SHELL_NORMAL);
+	signal_flag(SET, SHELL_HEREDOC_INTERRUPTED);
 	return (1);
 }
 
