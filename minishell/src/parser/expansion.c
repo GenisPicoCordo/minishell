@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:18:08 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/29 19:12:56 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:17:04 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	*expand_loop(const char *input, t_shell *shell, char *result)
 				i++;
 			tmp = ft_strndup(&input[start], i - start);
 			result = ft_strjoin_free(result, tmp);
+			free(tmp);
 		}
 	}
 	return (result);

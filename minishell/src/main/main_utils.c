@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:11:13 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/05 11:55:14 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:28:29 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ int	execute_command_loop(t_shell *shell)
 	if (error || signal_flag(GET, 0) == SHELL_HEREDOC_INTERRUPTED)
 		return (free_and_interrupt(shell));
 	if (shell->cmd_table->count == 1)
-		shell->last_status = execute_tokens(shell->cmd_table, &shell->env_list);
+		shell->last_status = execute_tokens(shell, shell->cmd_table,
+				&shell->env_list);
 	else
-		shell->last_status = execute_pipeline(shell->cmd_table, \
+		shell->last_status = execute_pipeline(shell, shell->cmd_table, \
 			&shell->env_list);
 	free_cmd_table(shell->cmd_table);
 	free_tokens(shell->tokens);

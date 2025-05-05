@@ -6,13 +6,13 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:55:44 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/30 18:21:32 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:28:29 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	exec_external(t_cmd *cmd, t_env **env_list)
+int	exec_external(t_shell *shell, t_cmd *cmd, t_env **env_list)
 {
 	pid_t	pid;
 	char	*cmd_path;
@@ -31,14 +31,14 @@ int	exec_external(t_cmd *cmd, t_env **env_list)
 	if (pid == 0)
 		execve_child_process(cmd, cmd_path, envp);
 	else if (pid > 0)
-		return (wait_and_return_status(pid, cmd_path, envp));
+		return (wait_and_return_status(shell, pid, cmd_path, envp));
 	perror("fork");
 	free(cmd_path);
 	free_split(envp);
 	return (1);
 }
 
-int	execute_tokens(t_cmd_table *table, t_env **env_list)
+int	execute_tokens(t_shell *shell, t_cmd_table *table, t_env **env_list)
 {
 	t_cmd	*cmd;
 
@@ -55,7 +55,7 @@ int	execute_tokens(t_cmd_table *table, t_env **env_list)
 	}
 	if (is_builtin(cmd->cmd))
 		return (exec_builtin_in_child(cmd, env_list));
-	return (exec_external(cmd, env_list));
+	return (exec_external(shell, cmd, env_list));
 }
 
 void	setup_redirs(t_cmd_table *t, t_pipeinfo *info)

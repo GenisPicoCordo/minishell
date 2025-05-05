@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 17:55:00 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/30 15:09:54 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 14:39:16 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,12 @@ void	loop_pipeline(t_cmd_table *table, t_env **env_list, t_pipeinfo *info)
 	}
 }
 
-int	execute_pipeline(t_cmd_table *table, t_env **env_list)
+int	execute_pipeline(t_shell *shell, t_cmd_table *table, t_env **env_list)
 {
-	t_pipeinfo	info;
-
-	info.i = 0;
-	info.in_fd = 0;
-	loop_pipeline(table, env_list, &info);
+	shell->info = malloc((sizeof(t_pipeinfo)));
+	shell->info->i = 0;
+	shell->info->in_fd = 0;
+	loop_pipeline(table, env_list, shell->info);
 	wait_for_all();
 	return (0);
 }

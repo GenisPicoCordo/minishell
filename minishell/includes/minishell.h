@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/05 11:57:03 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:51:25 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,16 @@ typedef struct s_cmd
 
 typedef struct s_cmd_table
 {
-	t_cmd	*cmds;
-	int		count;
+	t_cmd		*cmds;
+	int			count;
 }	t_cmd_table;
+
+typedef struct s_pipeinfo
+{
+	int		i;
+	int		in_fd;
+	int		pipefd[2];
+}	t_pipeinfo;
 
 typedef struct s_shell
 {
@@ -97,6 +104,7 @@ typedef struct s_shell
 	t_env		*env_list;
 	t_token		*tokens;
 	t_cmd_table	*cmd_table;
+	t_pipeinfo	*info;
 	char		*input;
 }	t_shell;
 
@@ -108,13 +116,6 @@ typedef enum e_shell_state
 	SHELL_HEREDOC_INTERRUPTED = 3,
 	SHELL_INTERRUPTED = 4
 }	t_shell_state;
-
-typedef struct s_pipeinfo
-{
-	int		i;
-	int		in_fd;
-	int		pipefd[2];
-}	t_pipeinfo;
 
 # define GET 0
 # define SET 1
@@ -137,9 +138,11 @@ void			handle_pipe_and_fork(t_cmd_table *table, t_env **env_list, \
 void			cleanup_parent_fds(t_pipeinfo *info, int total);
 void			loop_pipeline(t_cmd_table *table, t_env **env_list, \
 					t_pipeinfo *info);
-int				execute_pipeline(t_cmd_table *table, t_env **env_list);
-int				exec_external(t_cmd *cmd, t_env **env_list);
-int				execute_tokens(t_cmd_table *table, t_env **env_list);
+int				execute_pipeline(t_shell *shell, t_cmd_table *table, \
+					t_env **env_list);
+int				exec_external(t_shell *shell, t_cmd *cmd, t_env **env_list);
+int				execute_tokens(t_shell *shell, t_cmd_table *table, \
+					t_env **env_list);
 void			setup_redirs(t_cmd_table *t, t_pipeinfo *info);
 void			exec_builtin_or_external(t_cmd_table *t, t_env **env, \
 					t_pipeinfo *info);
@@ -147,7 +150,9 @@ void			child_setup(t_cmd_table *t, t_env **env, t_pipeinfo *info);
 char			**build_argv(t_token *tokens);
 int				is_parent_builtin(char *cmd);
 int				exec_builtin_in_child(t_cmd *cmd, t_env **env_list);
-int				wait_and_return_status(int pid, char *cmd_path, char **envp);
+int				exec_builtin_in_child(t_cmd *cmd, t_env **env_list);
+int				wait_and_return_status(t_shell *shell, int pid, char *cmd_path, \
+				char **envp);
 void			execve_child_process(t_cmd *cmd, char *cmd_path, char **envp);
 int				count_tokens(t_token *list);
 char			*create_heredoc_file(const char *delimiter);
