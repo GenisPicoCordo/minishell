@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   operator_handlers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ncampo-f <ncampo-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:14:02 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/04/10 11:55:52 by ncampo-f         ###   ########.fr       */
+/*   Updated: 2025/05/05 12:56:29 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,21 @@ t_token	*handle_redirect(const char *input, int *i)
 int	handle_operator(t_shell *shell, int i, t_token **head, t_token **tail)
 {
 	t_token	*token;
+	int		new_i;
 
-	token = handle_logical_ops(shell->input, &i);
+	new_i = i;
+	token = handle_logical_ops(shell->input, &new_i);
 	if (!token)
-		token = handle_pipe(shell->input, &i);
+		token = handle_pipe(shell->input, &new_i);
 	if (!token)
-		token = handle_redirect(shell->input, &i);
+		token = handle_redirect(shell->input, &new_i);
 	if (!token)
+	{
+		new_i = skip_spaces(shell->input, new_i);
+		if (shell->input[new_i] == '\0')
+			return (new_i);
 		return (INVALID_OPERATOR);
+	}
 	append_token(head, tail, token);
-	return (i + 1);
+	return (new_i);
 }

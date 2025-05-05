@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/30 18:05:22 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:57:03 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,11 @@ extern int	g_shell_state;
 
 //MAIN and LOOP functions
 void			exit_if_eof(t_shell *shell);
+int				free_and_interrupt(t_shell *shell);
 int				execute_command_loop(t_shell *shell);
+int				handle_interrupt_and_errors(t_shell *shell);
 void			main_loop(t_shell *shell);
+int				has_unsupported_chars(const char *input);
 
 //EXECUTOR
 

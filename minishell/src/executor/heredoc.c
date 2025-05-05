@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:02:06 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/30 18:22:04 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:33:27 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,5 @@ int	preprocess_heredocs(t_cmd_table *table)
 		}
 		i++;
 	}
-	//signal_flag(SET, SHELL_NORMAL);
 	return (0);
 }

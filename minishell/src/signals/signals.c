@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:46:54 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/30 18:35:47 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 12:00:19 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	handle_sigint(void)
 
 void	handle_sigquit(void)
 {
-	/*if (signal_flag(GET, 0) == SHELL_CHILD)
-		write(STDERR_FILENO, "Quit (core dumped)\n", 20);*/
+	if (signal_flag(GET, 0) == SHELL_CHILD)
+		write(STDERR_FILENO, "Quit (core dumped)\n", 20);
 }
 
 void	handle_signal(int signo)

@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:11:13 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/30 18:22:57 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/05 11:55:14 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,30 @@ int	execute_command_loop(t_shell *shell)
 		shell->last_status = execute_tokens(shell->cmd_table, &shell->env_list);
 	else
 		shell->last_status = execute_pipeline(shell->cmd_table, \
-		&shell->env_list);
+			&shell->env_list);
 	free_cmd_table(shell->cmd_table);
 	free_tokens(shell->tokens);
+	return (0);
+}
+
+int	handle_interrupt_and_errors(t_shell *shell)
+{
+	if (signal_flag(GET, 0) == SHELL_INTERRUPTED)
+	{
+		shell->last_status = 130;
+		signal_flag(SET, SHELL_NORMAL);
+		free(shell->input);
+		shell->input = NULL;
+		return (1);
+	}
+	exit_if_eof(shell);
+	if (has_unsupported_chars(shell->input))
+	{
+		ft_putendl_fd("minishell: unsupported character: ';' '\\' '\\n'", 2);
+		free(shell->input);
+		shell->input = NULL;
+		return (1);
+	}
 	return (0);
 }
 
@@ -64,15 +85,8 @@ void	main_loop(t_shell *shell)
 	{
 		signal_flag(SET, SHELL_NORMAL);
 		shell->input = readline("minishell> ");
-		if (signal_flag(GET, 0) == SHELL_INTERRUPTED)
-		{
-			shell->last_status = 130;
-			signal_flag(SET, SHELL_NORMAL);
-			free(shell->input);
-			shell->input = NULL;
+		if (handle_interrupt_and_errors(shell))
 			continue ;
-		}
-		exit_if_eof(shell);
 		if (*shell->input)
 			add_history(shell->input);
 		shell->tokens = tokenize_input(shell);
