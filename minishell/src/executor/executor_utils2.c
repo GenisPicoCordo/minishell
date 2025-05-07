@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:57:10 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/05 15:49:45 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/07 11:45:50 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	wait_and_return_status(t_shell *shell, int pid, char *cmd_path, char **envp)
 	int	status;
 	int	exit_code;
 
+	(void)shell;
 	waitpid(pid, &status, 0);
 	free(cmd_path);
 	free_split(envp);
@@ -76,10 +77,6 @@ int	wait_and_return_status(t_shell *shell, int pid, char *cmd_path, char **envp)
 	}
 	else
 		exit_code = 1;
-	if (shell->info)
-		close(shell->info->pipefd[0]);
-	if (shell->info)
-		close(shell->info->pipefd[1]);
 	return (exit_code);
 }
 

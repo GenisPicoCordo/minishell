@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/05 15:51:25 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/07 14:59:55 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define ERR_DOUBLE_QUOTE "Syntax error: double quote not closed"
 # define ERR_INV_OPERATOR "Syntax error"
 # define ERR_UNKNOWN_QUOTE "Unknown quote error"
+# define ERR_NON_SUPPORTED_TOKEN "Unsuported token detected"
 
 typedef enum e_type_tokens
 {
@@ -60,6 +61,7 @@ typedef enum e_quote_error
 	NO_ERROR = 0,
 	SINGLE_QUOTE_UNCLOSED = -1,
 	DOUBLE_QUOTE_UNCLOSED = -2,
+	NON_SUPPORTED_TOKEN = -4,
 	INVALID_OPERATOR = -5
 }	t_quote_error;
 

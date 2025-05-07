@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:11:13 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/05 14:28:29 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/07 15:12:57 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ int	execute_command_loop(t_shell *shell)
 			&shell->env_list);
 	free_cmd_table(shell->cmd_table);
 	free_tokens(shell->tokens);
+	if (shell && shell->info)
+	{
+		free(shell->info);
+		shell->info = NULL;
+	}
 	return (0);
 }
 
@@ -68,13 +73,6 @@ int	handle_interrupt_and_errors(t_shell *shell)
 		return (1);
 	}
 	exit_if_eof(shell);
-	if (has_unsupported_chars(shell->input))
-	{
-		ft_putendl_fd("minishell: unsupported character: ';' '\\' '\\n'", 2);
-		free(shell->input);
-		shell->input = NULL;
-		return (1);
-	}
 	return (0);
 }
 
