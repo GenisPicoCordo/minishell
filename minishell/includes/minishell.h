@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/08 14:26:38 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:03:40 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void			loop_pipeline(t_cmd_table *table, t_env **env_list, \
 					t_pipeinfo *info);
 int				execute_pipeline(t_cmd_table *table, t_env **env_list);
 int				exec_external(t_shell *shell, t_cmd *cmd, t_env **env_list);
+int				exec_parent_builtin(t_cmd *cmd, t_env **env_list);
 int				execute_tokens(t_shell *shell, t_cmd_table *table, \
 					t_env **env_list);
 void			setup_redirs(t_cmd_table *t, t_pipeinfo *info);

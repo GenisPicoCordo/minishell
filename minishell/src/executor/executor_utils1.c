@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:55:44 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/05 15:28:29 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:04:15 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,6 @@ int	exec_external(t_shell *shell, t_cmd *cmd, t_env **env_list)
 	free(cmd_path);
 	free_split(envp);
 	return (1);
-}
-
-int	execute_tokens(t_shell *shell, t_cmd_table *table, t_env **env_list)
-{
-	t_cmd	*cmd;
-
-	if (!table || table->count != 1)
-		return (1);
-	cmd = &table->cmds[0];
-	if (!cmd->cmd)
-		return (1);
-	if (is_parent_builtin(cmd->cmd))
-	{
-		if (apply_redirections(cmd->redirs))
-			return (1);
-		return (execute_builtin(cmd->args, env_list));
-	}
-	if (is_builtin(cmd->cmd))
-		return (exec_builtin_in_child(cmd, env_list));
-	return (exec_external(shell, cmd, env_list));
 }
 
 void	setup_redirs(t_cmd_table *t, t_pipeinfo *info)
