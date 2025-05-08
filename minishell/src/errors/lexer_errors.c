@@ -6,11 +6,23 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:43:19 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/05/07 15:00:20 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:25:31 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	print_syntax_error(int err_code)
+{
+	if (err_code == -4)
+		ft_putendl_fd("minishell: syntax error near unexpected token", 2);
+	else if (err_code == SINGLE_QUOTE_UNCLOSED)
+		ft_putendl_fd("Syntax error: single quote not closed", 2);
+	else if (err_code == DOUBLE_QUOTE_UNCLOSED)
+		ft_putendl_fd("Syntax error: double quote not closed", 2);
+	else
+		ft_putendl_fd("minishell: syntax error", 2);
+}
 
 void	print_quote_error(t_quote_error err)
 {

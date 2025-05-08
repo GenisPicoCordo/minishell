@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 12:27:47 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/10 12:29:36 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 15:17:48 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,20 @@ int	env_list_size(t_env *env)
 	return (count);
 }
 
+static char	*build_env_entry(t_env *env)
+{
+	char	*entry;
+
+	if (env->value)
+	{
+		entry = ft_strjoin(env->key, "=");
+		if (!entry)
+			return (NULL);
+		return (ft_strjoin_free(entry, env->value));
+	}
+	return (ft_strdup(env->key));
+}
+
 char	**env_to_array(t_env *env)
 {
 	int		size;
@@ -39,14 +53,13 @@ char	**env_to_array(t_env *env)
 	i = 0;
 	while (env)
 	{
-		entry = ft_strjoin(env->key, "=");
-		array[i] = ft_strjoin_free(entry, env->value);
-		if (!array[i])
+		entry = build_env_entry(env);
+		if (!entry)
 		{
 			free_split(array);
 			return (NULL);
 		}
-		i++;
+		array[i++] = entry;
 		env = env->next;
 	}
 	array[i] = NULL;

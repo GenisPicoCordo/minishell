@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/08 12:11:27 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:26:38 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,7 @@ char			*expand_home(const char *input, t_shell *shell);
 // ──────────────────────────────────────────────────────────────
 
 void			print_quote_error(t_quote_error err);
+void			print_syntax_error(int err_code);
 
 t_cmd_table		*parse_tokens(t_token *tokens);
 

@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 12:14:02 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/05/05 14:11:21 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:55:12 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,25 @@ t_token	*handle_redirect(const char *input, int *i)
 
 int	handle_operator(t_shell *shell, int i, t_token **head, t_token **tail)
 {
-	t_token	*token;
+	t_token		*token;
+	const char	*input;
+	int			next_index;
 
-	token = handle_logical_ops(shell->input, &i);
+	input = shell->input;
+	token = handle_logical_ops(input, &i);
 	if (!token)
-		token = handle_pipe(shell->input, &i);
+		token = handle_pipe(input, &i);
 	if (!token)
-		token = handle_redirect(shell->input, &i);
-	if (!token && shell->input[ft_strlen(shell->input) - 1] != ' ')
+		token = handle_redirect(input, &i);
+	if (!token)
 		return (INVALID_OPERATOR);
+	next_index = skip_spaces(input, i + 1);
+	if (!input[next_index] || ft_strchr("|<>", input[next_index]))
+	{
+		free(token->content);
+		free(token);
+		return (INVALID_OPERATOR);
+	}
 	append_token(head, tail, token);
 	return (i + 1);
 }
