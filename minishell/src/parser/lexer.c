@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 14:30:20 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/05/07 15:01:27 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:05:09 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	handle_word(t_shell *shell, int i, t_token **head, t_token **tail)
 int	process_tokens(t_shell *shell, t_token **head, t_token **tail)
 {
 	int		i;
+	int		ret;
 	char	*input;
 
 	i = 0;
@@ -49,15 +50,19 @@ int	process_tokens(t_shell *shell, t_token **head, t_token **tail)
 		if (!input[i])
 			break ;
 		if (input[i] == '\'')
-			i = handle_single_quotes(shell, i, head, tail);
+			ret = handle_single_quotes(shell, i, head, tail);
 		else if (input[i] == '"')
-			i = handle_double_quotes(shell, i, head, tail);
+			ret = handle_double_quotes(shell, i, head, tail);
 		else if (ft_strchr("|<>", input[i]))
-			i = handle_operator(shell, i, head, tail);
-		else if (input[i])
-			i = handle_word(shell, i, head, tail);
-		if (i < 0)
-			return (i);
+			ret = handle_operator(shell, i, head, tail);
+		else
+			ret = handle_word(shell, i, head, tail);
+		if (ret < 0)
+		{
+			free_tokens(*head);
+			return (ret);
+		}
+		i = ret;
 	}
 	return (i);
 }

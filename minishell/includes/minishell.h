@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/07 14:59:55 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:11:27 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,6 @@ typedef struct s_shell
 	t_env		*env_list;
 	t_token		*tokens;
 	t_cmd_table	*cmd_table;
-	t_pipeinfo	*info;
 	char		*input;
 }	t_shell;
 
@@ -127,10 +126,11 @@ extern int	g_shell_state;
 //MAIN and LOOP functions
 void			exit_if_eof(t_shell *shell);
 int				free_and_interrupt(t_shell *shell);
-int				execute_command_loop(t_shell *shell);
 int				handle_interrupt_and_errors(t_shell *shell);
 void			main_loop(t_shell *shell);
-int				has_unsupported_chars(const char *input);
+int				should_skip_execution(t_shell *shell);
+void			cleanup_after_execution(t_shell *shell);
+int				execute_command_loop(t_shell *shell);
 
 //EXECUTOR
 
@@ -140,8 +140,7 @@ void			handle_pipe_and_fork(t_cmd_table *table, t_env **env_list, \
 void			cleanup_parent_fds(t_pipeinfo *info, int total);
 void			loop_pipeline(t_cmd_table *table, t_env **env_list, \
 					t_pipeinfo *info);
-int				execute_pipeline(t_shell *shell, t_cmd_table *table, \
-					t_env **env_list);
+int				execute_pipeline(t_cmd_table *table, t_env **env_list);
 int				exec_external(t_shell *shell, t_cmd *cmd, t_env **env_list);
 int				execute_tokens(t_shell *shell, t_cmd_table *table, \
 					t_env **env_list);

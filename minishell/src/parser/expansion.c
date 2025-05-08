@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 14:18:08 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/05/05 14:17:04 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:48:44 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char	*expand_loop(const char *input, t_shell *shell, char *result)
 		{
 			tmp = expand_variable(input, &i, shell);
 			result = ft_strjoin_free(result, tmp);
+			free(tmp);
 		}
 		else
 		{

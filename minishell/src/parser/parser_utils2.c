@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:07:58 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 18:27:00 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 12:47:37 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ void	fill_command_args(t_cmd *cmd, t_token **tmp, t_token *end)
 	arg_index = 0;
 	cmd->args = malloc(sizeof(char *) * (arg_count + 1));
 	if (!cmd->args)
+	{
+		cmd->heredoc_names = NULL;
 		return ;
+	}
 	while (*tmp != end && *tmp)
 	{
 		if ((*tmp)->type == T_WORD)
@@ -42,7 +45,11 @@ int	init_cmd_table(t_cmd_table **table, int count)
 	(*table)->count = count;
 	(*table)->cmds = malloc(sizeof(t_cmd) * count);
 	if (!(*table)->cmds)
+	{
+		free(*table);
+		*table = NULL;
 		return (0);
+	}
 	return (1);
 }
 
@@ -51,6 +58,7 @@ void	setup_command(t_cmd *cmd)
 	cmd->cmd = NULL;
 	cmd->args = NULL;
 	cmd->redirs = NULL;
+	cmd->heredoc_names = NULL;
 }
 
 void	move_to_next_pipe(t_token **current)

@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:11:13 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/07 15:12:57 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/08 13:57:28 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,42 +24,22 @@ void	exit_if_eof(t_shell *shell)
 int	free_and_interrupt(t_shell *shell)
 {
 	shell->last_status = 130;
-	free_cmd_table(shell->cmd_table);
-	free_tokens(shell->tokens);
-	free(shell->input);
-	shell->cmd_table = NULL;
-	shell->tokens = NULL;
-	shell->input = NULL;
-	return (1);
-}
-
-int	execute_command_loop(t_shell *shell)
-{
-	int	error;
-
-	if (!shell->tokens)
-		return (0);
-	g_shell_state = SHELL_CHILD;
-	shell->cmd_table = parse_tokens(shell->tokens);
-	if (!shell->cmd_table || !validate_cmd_table(shell))
-		return (0);
-	error = preprocess_heredocs(shell->cmd_table);
-	if (error || signal_flag(GET, 0) == SHELL_HEREDOC_INTERRUPTED)
-		return (free_and_interrupt(shell));
-	if (shell->cmd_table->count == 1)
-		shell->last_status = execute_tokens(shell, shell->cmd_table,
-				&shell->env_list);
-	else
-		shell->last_status = execute_pipeline(shell, shell->cmd_table, \
-			&shell->env_list);
-	free_cmd_table(shell->cmd_table);
-	free_tokens(shell->tokens);
-	if (shell && shell->info)
+	if (shell->cmd_table)
 	{
-		free(shell->info);
-		shell->info = NULL;
+		free_cmd_table(shell->cmd_table);
+		shell->cmd_table = NULL;
 	}
-	return (0);
+	if (shell->tokens)
+	{
+		free_tokens(shell->tokens);
+		shell->tokens = NULL;
+	}
+	if (shell->input)
+	{
+		free(shell->input);
+		shell->input = NULL;
+	}
+	return (1);
 }
 
 int	handle_interrupt_and_errors(t_shell *shell)
@@ -91,6 +71,7 @@ void	main_loop(t_shell *shell)
 		shell->tokens = tokenize_input(shell);
 		ret = execute_command_loop(shell);
 		free(shell->input);
+		shell->input = NULL;
 		if (ret)
 			continue ;
 	}
