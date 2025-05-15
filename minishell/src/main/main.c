@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 17:29:27 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/08 12:02:42 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/15 15:49:36 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	main(int argc, char **argv, char **envp)
 	setup_signal_handlers();
 	init_shell(&shell);
 	shell.env_list = env_init(envp);
-	shell.last_status = 0;
 	main_loop(&shell);
 	return (shell.last_status);
 }
