@@ -12,6 +12,33 @@
 
 #include "../../includes/minishell.h"
 
+static int	skip_word_with_quotes(t_shell *shell, int i)
+{
+	while (shell->input[i] && shell->input[i] != ' '
+		&& !ft_strchr("|<>\"'", shell->input[i]))
+	{
+		if (shell->input[i] == '=' && shell->input[i + 1] == '"')
+		{
+			i += 2;
+			while (shell->input[i] && shell->input[i] != '"')
+				i++;
+			if (shell->input[i])
+				i++;
+		}
+		else if (shell->input[i] == '=' && shell->input[i + 1] == '\'')
+		{
+			i += 2;
+			while (shell->input[i] && shell->input[i] != '\'')
+				i++;
+			if (shell->input[i])
+				i++;
+		}
+		else
+			i++;
+	}
+	return (i);
+}
+
 int	handle_word(t_shell *shell, int i, t_token **head, t_token **tail)
 {
 	int		start;
@@ -20,9 +47,7 @@ int	handle_word(t_shell *shell, int i, t_token **head, t_token **tail)
 	t_token	*token;
 
 	start = i;
-	while (shell->input[i] && shell->input[i] != ' '
-		&& !ft_strchr("|<>\"'", shell->input[i]))
-		i++;
+	i = skip_word_with_quotes(shell, i);
 	raw = ft_strndup(&shell->input[start], i - start);
 	if (!raw)
 		return (-1);
