@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/03 15:43:56 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/09 15:37:39 by gpico-co         ###   ########.fr       */
+/*   Created: 2025/04/29 17:51:42 by gpico-co          #+#    #+#             */
+/*   Updated: 2025/04/29 17:51:45 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-int	builtin_env(char **argv, t_env *env)
+char	*ft_strndup(const char *s, size_t n)
 {
-	(void)argv;
-	while (env)
+	char	*dup;
+	size_t	i;
+
+	dup = malloc(sizeof(char) * (n + 1));
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (s[i] && i < n)
 	{
-		if (env->value)
-		{
-			ft_putstr_fd(env->key, 1);
-			ft_putchar_fd('=', 1);
-			ft_putendl_fd(env->value, 1);
-		}
-		env = env->next;
+		dup[i] = s[i];
+		i++;
 	}
-	return (0);
+	dup[i] = '\0';
+	return (dup);
 }

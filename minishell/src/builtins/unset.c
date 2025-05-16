@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/03 15:43:56 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/09 15:37:39 by gpico-co         ###   ########.fr       */
+/*   Created: 2025/04/09 11:15:41 by gpico-co          #+#    #+#             */
+/*   Updated: 2025/04/29 18:56:08 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-int	builtin_env(char **argv, t_env *env)
+int	builtin_unset(char **argv, t_env **env_list)
 {
-	(void)argv;
-	while (env)
+	int	i;
+
+	i = 1;
+	while (argv[i])
 	{
-		if (env->value)
-		{
-			ft_putstr_fd(env->key, 1);
-			ft_putchar_fd('=', 1);
-			ft_putendl_fd(env->value, 1);
-		}
-		env = env->next;
+		env_unset(env_list, argv[i]);
+		i++;
 	}
 	return (0);
 }

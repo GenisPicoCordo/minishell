@@ -1,27 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/03 15:05:46 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/03 15:50:36 by gpico-co         ###   ########.fr       */
+/*   Created: 2025/04/09 11:24:02 by gpico-co          #+#    #+#             */
+/*   Updated: 2025/04/30 11:41:26 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+int	is_valid_identifier(const char *str)
+{
+	int	i;
+
+	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (0);
+	i = 1;
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	is_numeric(const char *str)
 {
 	int	i;
 
+	if (!str || !*str)
+		return (0);
 	i = 0;
-	if (str[0] == '-' || str[0] == '+')
+	if (str[0] == '+' || str[0] == '-')
 		i++;
 	while (str[i])
 	{
-		if (str[i] < '0' || str[i] > '9')
+		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
 	}

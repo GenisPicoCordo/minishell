@@ -5,96 +5,73 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/01 13:46:54 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/03 15:50:08 by gpico-co         ###   ########.fr       */
+/*   Created: 2025/04/29 17:55:00 by gpico-co          #+#    #+#             */
+/*   Updated: 2025/05/08 12:11:15 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-🛠️ Paso 1: Preparar un subcomando de prueba
-Vamos a asumir que el parser de tu compañero te da una lista de este tipo:
-
-// tokens: ls -l -a
-[t_token] -> content: "ls"   | type: T_COMMANDS  
-[t_token] -> content: "-l"   | type: T_ARGUMENT  
-[t_token] -> content: "-a"   | type: T_ARGUMENT  
-Lo que necesitamos es:
-
-Construir un char **argv para execve
-
-Verificar si es un builtin (por ahora no)
-
-Si no → hacer fork, y el hijo ejecuta con execve
-*/
-
 #include "../../includes/minishell.h"
 
-int	count_tokens(t_token *list)
+void	wait_for_all(void)
 {
-	int	count;
-
-	count = 0;
-	while (list)
-	{
-		if (list->type == T_COMMANDS || list->type == T_ARGUMENT)
-			count++;
-		list = list->next;
-	}
-	return (count);
+	while (wait(NULL) > 0)
+		;
 }
 
-char	**build_argv(t_token *tokens)
+void	handle_pipe_and_fork(t_cmd_table *table, t_env **env_list, \
+	t_pipeinfo *info)
 {
-	int		i;
-	int		count;
-	char	**argv;
-
-	i = 0;
-	count = count_tokens(tokens);
-	argv = malloc(sizeof(char *) * (count + 1));
-	if (!argv)
-		return (NULL);
-	while (tokens)
-	{
-		if (tokens->type == T_COMMANDS || tokens->type == T_ARGUMENT)
-			argv[i++] = tokens->content;
-		tokens = tokens->next;
-	}
-	argv[i] = NULL;
-	return (argv);
-}
-
-void	execute_tokens(t_token *tokens, char **env)
-{
-	char	**argv;
 	pid_t	pid;
-	int		status;
 
-	if (!tokens)
-		return ;
-	argv = build_argv(tokens);
-	if (!argv)
-		return ;
-	if (is_builtin(argv[0]))
+	if (info->i < table->count - 1)
 	{
-		execute_builtin(argv, env);
-		free(argv);
+		if (pipe(info->pipefd) == -1)
+			perror("pipe");
 	}
-	else
+	pid = fork();
+	if (pid == 0)
+		child_setup(table, env_list, info);
+	else if (pid < 0)
+		perror("fork");
+}
+
+void	cleanup_parent_fds(t_pipeinfo *info, int total)
+{
+	if (info->i != 0)
+		close(info->in_fd);
+	if (info->i < total - 1)
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			execve(argv[0], argv, env);
-			perror("execve");
-			exit(1);
-		}
-		else if (pid > 0)
-		{
-			waitpid(pid, &status, 0);
-			free(argv);
-		}
-		else
-			perror("fork");
+		close(info->pipefd[1]);
+		info->in_fd = info->pipefd[0];
 	}
+}
+
+void	loop_pipeline(t_cmd_table *table, t_env **env_list, t_pipeinfo *info)
+{
+	while (info->i < table->count)
+	{
+		if (!table->cmds[info->i].cmd)
+		{
+			info->i++;
+			continue ;
+		}
+		handle_pipe_and_fork(table, env_list, info);
+		cleanup_parent_fds(info, table->count);
+		info->i++;
+	}
+}
+
+int	execute_pipeline(t_cmd_table *table, t_env **env_list)
+{
+	t_pipeinfo	*info;
+
+	info = malloc(sizeof(t_pipeinfo));
+	if (!info)
+		return (1);
+	info->i = 0;
+	info->in_fd = 0;
+	loop_pipeline(table, env_list, info);
+	wait_for_all();
+	free(info);
+	return (0);
 }

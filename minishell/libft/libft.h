@@ -94,5 +94,6 @@ char	*get_next_line(int fd);
 char	*ft_strjoin_free(char *s1, char *s2);
 char	*ft_free_gnl(char **str);
 int		ft_count_words(const char *str);
+char	*ft_strndup(const char *s, size_t n);
 
 #endif

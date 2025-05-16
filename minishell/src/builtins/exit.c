@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 15:44:04 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/03 15:49:45 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:51:55 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	builtin_exit(char **argv)
 		ft_putstr_fd("exit: ", 2);
 		ft_putstr_fd(argv[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
-		exit(255);
+		exit(2);
 	}
 	if (argv[2])
 	{

@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/19 17:29:27 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/15 15:49:36 by gpico-co         ###   ########.fr       */
+/*   Created: 2025/04/09 14:54:53 by ncampo-f          #+#    #+#             */
+/*   Updated: 2025/05/08 13:38:49 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	init_shell(t_shell *shell)
+t_cmd_table	*parse_tokens(t_token *tokens)
 {
-	shell->input = NULL;
-	shell->tokens = NULL;
-	shell->cmd_table = NULL;
-	shell->last_status = 0;
-}
+	t_cmd_table	*table;
+	int			count;
+	int			i;
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_shell	shell;
-
-	(void)argv;
-	if (argc > 1)
+	count = count_pipes(tokens);
+	if (!init_cmd_table(&table, count))
+		return (NULL);
+	fill_cmd_table(table, tokens);
+	i = 0;
+	while (i < table->count)
 	{
-		ft_putendl_fd("minishell: this program does not take arguments", 2);
-		return (1);
+		if (!table->cmds[i].args || !table->cmds[i].cmd)
+		{
+			free_cmd_table(table);
+			return (NULL);
+		}
+		i++;
 	}
-	setup_signal_handlers();
-	init_shell(&shell);
-	shell.env_list = env_init(envp);
-	main_loop(&shell);
-	return (shell.last_status);
+	return (table);
 }
