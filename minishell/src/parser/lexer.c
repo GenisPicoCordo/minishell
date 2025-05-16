@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 14:30:20 by ncampo-f          #+#    #+#             */
-/*   Updated: 2025/05/14 17:06:38 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:23:48 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	check_unsupported_characters(char *content)
 	if (ft_strlen(content) == 1
 		&& (!ft_strncmp(content, ";", 1)
 			|| !ft_strncmp(content, "\\", 1)
-			|| !ft_strncmp(content, "&", 1)))
+			|| !ft_strncmp(content, "&", 1)
+			|| !ft_strncmp(content, "!", 1)
+			|| !ft_strncmp(content, "(", 1)
+			|| !ft_strncmp(content, ")", 1)))
 	{
 		return (1);
 	}
