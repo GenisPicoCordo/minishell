@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 15:35:52 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/08 16:03:40 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/16 12:50:09 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ typedef enum e_shell_state
 	SHELL_CHILD = 1,
 	SHELL_HEREDOC = 2,
 	SHELL_HEREDOC_INTERRUPTED = 3,
-	SHELL_INTERRUPTED = 4
+	SHELL_INTERRUPTED = 4,
+	SHELL_NORMAL_INTERRUPTED = 5
 }	t_shell_state;
 
 # define GET 0

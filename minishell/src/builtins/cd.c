@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 16:39:49 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/04/29 19:10:23 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/16 11:16:29 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	builtin_cd(char **argv, t_env **env_list)
 		return (1);
 	path = get_cd_target(argv, env_list, oldpwd);
 	if (!path || chdir(path) != 0)
-		return (perror("cd"), free(oldpwd), 1);
+		return (perror("cd"), 1);
 	if (getcwd(cwd, sizeof(cwd)))
 	{
 		env_set(env_list, "OLDPWD", oldpwd);

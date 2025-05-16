@@ -6,7 +6,7 @@
 /*   By: gpico-co <gpico-co@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 15:11:13 by gpico-co          #+#    #+#             */
-/*   Updated: 2025/05/08 13:57:28 by gpico-co         ###   ########.fr       */
+/*   Updated: 2025/05/16 13:09:18 by gpico-co         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	main_loop(t_shell *shell)
 	{
 		signal_flag(SET, SHELL_NORMAL);
 		shell->input = readline("minishell> ");
+		signal_flag(SET, SHELL_NORMAL);
 		if (handle_interrupt_and_errors(shell))
 			continue ;
 		if (*shell->input)
