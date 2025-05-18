@@ -64,9 +64,19 @@ void	main_loop(t_shell *shell)
 	{
 		signal_flag(SET, SHELL_NORMAL);
 		shell->input = readline("minishell> ");
-		signal_flag(SET, SHELL_NORMAL);
-		if (handle_interrupt_and_errors(shell))
-			continue ;
+		if (signal_flag(GET, 0) == SHELL_CTRL_C)
+		{
+			shell->last_status = 130;
+			signal_flag(SET, SHELL_NORMAL);
+			free(shell->input);
+			shell->input = NULL;
+			continue;
+		}
+		if (!shell->input)
+		{
+			write(1, "exit\n", 5);
+			clean_exit(shell->env_list, NULL, NULL, 0);
+		}
 		if (*shell->input)
 			add_history(shell->input);
 		shell->tokens = tokenize_input(shell);
@@ -74,6 +84,6 @@ void	main_loop(t_shell *shell)
 		free(shell->input);
 		shell->input = NULL;
 		if (ret)
-			continue ;
+			continue;
 	}
 }
