@@ -12,9 +12,25 @@
 
 #include "../includes/minishell.h"
 
+static char	*clean_value_quotes(char *raw_value)
+{
+	size_t	len;
+
+	if (!raw_value)
+		return (NULL);
+	len = ft_strlen(raw_value);
+	if (len >= 2 && ((raw_value[0] == '"' && raw_value[len - 1] == '"') \
+		|| (raw_value[0] == '\'' && raw_value[len - 1] == '\'')))
+	{
+		return (ft_substr(raw_value, 1, len - 2));
+	}
+	return (ft_strdup(raw_value));
+}
+
 int	split_key_value(char *arg, char **key, char **value)
 {
 	char	*equal;
+	char	*raw_value;
 
 	equal = ft_strchr(arg, '=');
 	if (!equal)
@@ -24,8 +40,12 @@ int	split_key_value(char *arg, char **key, char **value)
 		return (1);
 	}
 	*key = ft_substr(arg, 0, equal - arg);
-	*value = ft_strdup(equal + 1);
-	return (1);
+	raw_value = ft_strdup(equal + 1);
+	if (!raw_value)
+		return (0);
+	*value = clean_value_quotes(raw_value);
+	free(raw_value);
+	return (*value != NULL);
 }
 
 void	update_value(t_env *env, const char *value)
