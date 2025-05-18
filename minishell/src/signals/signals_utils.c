@@ -31,11 +31,14 @@ void	handle_signal_heredoc_interrupt(void)
 
 void	handle_normal_interrupt(void)
 {
-	write(1, "\n", 1);
+	char dummy;
+
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
-	signal_flag(SET, SHELL_NORMAL);
+	signal_flag(SET, SHELL_CTRL_C);
+	dummy = '\n';
+	ioctl(STDIN_FILENO, TIOCSTI, &dummy);
 }
 
 void	handle_child_interrupt(void)
